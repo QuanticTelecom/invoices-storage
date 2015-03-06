@@ -10,7 +10,7 @@ interface PaymentTranslatorInterface
      * @param PaymentLogic $paymentLogic | null Payment logic instance to use
      * @return PaymentLogic
      */
-    public function customerModelToPaymentLogic(
+    public function paymentModelToPaymentLogic(
         PaymentModel $paymentModel,
         PaymentLogic $paymentLogic = null
     );
@@ -19,5 +19,5 @@ interface PaymentTranslatorInterface
      * @param PaymentLogic $paymentLogic
      * @return PaymentModel
      */
-    public function customerLogicToPaymentModel(PaymentLogic $paymentLogic);
+    public function paymentLogicToPaymentModel(PaymentLogic $paymentLogic);
 }
