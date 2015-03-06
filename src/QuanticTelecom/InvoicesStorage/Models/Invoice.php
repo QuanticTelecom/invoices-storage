@@ -31,4 +31,14 @@ class Invoice extends Model
     {
         return $this->embedsOne(Payment::class);
     }
+
+    /**
+     * The Item models associated with the invoice.
+     *
+     * @return EmbedsMany
+     */
+    public function items()
+    {
+        return $this->embedsMany(Item::class);
+    }
 }
