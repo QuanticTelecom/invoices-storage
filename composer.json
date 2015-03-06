@@ -9,7 +9,8 @@
     ],
     "require": {
         "php": ">=5.5.0",
-        "illuminate/support": "4.2.*"
+        "illuminate/support": "4.2.*",
+        "quantic-telecom/storage": "dev-develop"
     },
     "require-dev": {
         "squizlabs/php_codesniffer": "~2.0"
