@@ -41,4 +41,14 @@ class Invoice extends Model
     {
         return $this->embedsMany(Item::class);
     }
+
+    /**
+     * The GroupOfItems models associated with the invoice.
+     *
+     * @return EmbedsMany
+     */
+    public function groups()
+    {
+        return $this->embedsMany(GroupOfItems::class);
+    }
 }
