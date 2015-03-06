@@ -13,12 +13,22 @@ class Invoice extends Model
     protected $collection = "invoices";
 
     /**
-     * The Customer associated with the model.
+     * The Customer associated with the invoice.
      *
      * @return EmbedsMany
      */
     public function customer()
     {
         return $this->embedsOne(Customer::class);
+    }
+
+    /**
+     * The Payment associated with the invoice.
+     *
+     * @return EmbedsMany
+     */
+    public function payment()
+    {
+        return $this->embedsOne(Payment::class);
     }
 }
