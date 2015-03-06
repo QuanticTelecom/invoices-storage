@@ -1,5 +1,6 @@
 <?php namespace QuanticTelecom\InvoicesStorage\Models;
 
+use Jenssegers\Mongodb\Relations\EmbedsMany;
 use QuanticTelecom\Storage\Model;
 
 class Invoice extends Model
@@ -10,4 +11,14 @@ class Invoice extends Model
      * @var string
      */
     protected $collection = "invoices";
+
+    /**
+     * The Customer associated with the model.
+     *
+     * @return EmbedsMany
+     */
+    public function customer()
+    {
+        return $this->embedsOne(Customer::class);
+    }
 }
