@@ -3,6 +3,10 @@
 use QuanticTelecom\Invoices\GroupOfItems as GroupOfItemsLogic;
 use QuanticTelecom\InvoicesStorage\Models\GroupOfItems as GroupOfItemsModel;
 
+/**
+ * Interface GroupOfItemsTranslatorInterface
+ * @package QuanticTelecom\InvoicesStorage\Contracts
+ */
 interface GroupOfItemsTranslatorInterface
 {
     /**

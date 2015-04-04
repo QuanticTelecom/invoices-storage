@@ -3,6 +3,10 @@
 use QuanticTelecom\Invoices\Contracts\PaymentInterface as PaymentLogic;
 use QuanticTelecom\InvoicesStorage\Models\Payment as PaymentModel;
 
+/**
+ * Interface PaymentTranslatorInterface
+ * @package QuanticTelecom\InvoicesStorage\Contracts
+ */
 interface PaymentTranslatorInterface
 {
     /**

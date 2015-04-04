@@ -2,6 +2,10 @@
 
 use QuanticTelecom\Invoices\AbstractInvoice;
 
+/**
+ * Interface InvoiceRepositoryInterface
+ * @package QuanticTelecom\InvoicesStorage\Repositories
+ */
 interface InvoiceRepositoryInterface
 {
     /**

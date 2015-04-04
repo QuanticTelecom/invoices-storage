@@ -6,6 +6,10 @@ use QuanticTelecom\InvoicesStorage\Exceptions\GroupOfItemsFactory\GroupOfItemsTy
 use QuanticTelecom\InvoicesStorage\Exceptions\GroupOfItemsFactory\UnknownGroupOfItemsClassException;
 use QuanticTelecom\InvoicesStorage\Exceptions\InvalidDataForGroupsContainerFactoryException;
 
+/**
+ * Class GroupOfItemsFactory
+ * @package QuanticTelecom\InvoicesStorage\Factories
+ */
 class GroupOfItemsFactory implements GroupOfItemsFactoryInterface
 {
     use ItemsContainerFactoryTrait;
@@ -57,6 +61,12 @@ class GroupOfItemsFactory implements GroupOfItemsFactoryInterface
         }
     }
 
+    /**
+     * Build a new GroupOfItems implementation instance.
+     *
+     * @param array $data
+     * @return GroupOfItems
+     */
     protected function buildGroupOfItems($data = [])
     {
         if (!$this->checkData($data)) {

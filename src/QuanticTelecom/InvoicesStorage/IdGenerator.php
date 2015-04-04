@@ -2,6 +2,10 @@
 
 use QuanticTelecom\Invoices\Contracts\IdGeneratorInterface;
 
+/**
+ * Class IdGenerator
+ * @package QuanticTelecom\InvoicesStorage
+ */
 class IdGenerator implements IdGeneratorInterface
 {
     /**

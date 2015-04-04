@@ -2,6 +2,10 @@
 
 use QuanticTelecom\InvoicesStorage\Exceptions\InvoiceStorageException;
 
+/**
+ * Class InvoiceFactoryException
+ * @package QuanticTelecom\InvoicesStorage\Exceptions\InvoiceFactory
+ */
 class InvoiceFactoryException extends InvoiceStorageException
 {
 }

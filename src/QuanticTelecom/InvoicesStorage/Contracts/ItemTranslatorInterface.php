@@ -3,6 +3,10 @@
 use QuanticTelecom\Invoices\Contracts\ItemInterface as ItemLogic;
 use QuanticTelecom\InvoicesStorage\Models\Item as ItemModel;
 
+/**
+ * Interface ItemTranslatorInterface
+ * @package QuanticTelecom\InvoicesStorage\Contracts
+ */
 interface ItemTranslatorInterface
 {
     /**

@@ -9,6 +9,10 @@ use QuanticTelecom\InvoicesStorage\Exceptions\InvoiceFactory\InvoiceTypeNotFound
 use QuanticTelecom\InvoicesStorage\Exceptions\InvoiceFactory\UnknownInvoiceClassException;
 use QuanticTelecom\InvoicesStorage\IdGenerator;
 
+/**
+ * Class InvoiceFactory
+ * @package QuanticTelecom\InvoicesStorage\Factories
+ */
 class InvoiceFactory implements InvoiceFactoryInterface
 {
     use ItemsContainerFactoryTrait;
@@ -93,6 +97,8 @@ class InvoiceFactory implements InvoiceFactoryInterface
     }
 
     /**
+     * Build an AbstractInvoice.
+     *
      * @param $class AbstractInvoice
      * @param array $data
      * @return AbstractInvoice
@@ -114,7 +120,7 @@ class InvoiceFactory implements InvoiceFactoryInterface
     }
 
     /**
-     * Build ExcludingTaxInvoice
+     * Build an ExcludingTaxInvoice implementation.
      *
      * @param array $data
      * @return ExcludingTaxInvoice
@@ -126,7 +132,7 @@ class InvoiceFactory implements InvoiceFactoryInterface
     }
 
     /**
-     * Build IncludingTaxInvoice
+     * Build an IncludingTaxInvoice implementation.
      *
      * @param array $data
      * @return IncludingTaxInvoice
@@ -151,6 +157,12 @@ class InvoiceFactory implements InvoiceFactoryInterface
             and array_key_exists('type', $data['customer']);
     }
 
+    /**
+     * Fill the invoice with all required data.
+     *
+     * @param InvoiceInterface $invoice
+     * @param array $data
+     */
     private function fillInvoice(InvoiceInterface $invoice, $data = [])
     {
         if (isset($data['createdAt'])) {
@@ -176,6 +188,8 @@ class InvoiceFactory implements InvoiceFactoryInterface
     }
 
     /**
+     * Check if there is a payment in the data array.
+     *
      * @param array $data
      * @return bool
      * @throws InvalidDataForInvoiceFactoryException

@@ -3,6 +3,10 @@
 use QuanticTelecom\InvoicesStorage\Models\Invoice as InvoiceModel;
 use QuanticTelecom\Invoices\AbstractInvoice as InvoiceLogic;
 
+/**
+ * Interface InvoiceTranslatorInterface
+ * @package QuanticTelecom\InvoicesStorage\Contracts
+ */
 interface InvoiceTranslatorInterface
 {
     /**

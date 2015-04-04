@@ -5,6 +5,10 @@ use QuanticTelecom\InvoicesStorage\Exceptions\InvoiceFactory\InvalidDataForInvoi
 use QuanticTelecom\InvoicesStorage\Exceptions\InvoiceFactory\InvoiceTypeNotFoundException;
 use QuanticTelecom\InvoicesStorage\Exceptions\InvoiceFactory\UnknownInvoiceClassException;
 
+/**
+ * Interface InvoiceFactoryInterface
+ * @package QuanticTelecom\InvoicesStorage\Factories
+ */
 interface InvoiceFactoryInterface
 {
     /**

@@ -12,30 +12,44 @@ use QuanticTelecom\InvoicesStorage\Factories\InvoiceFactoryInterface;
 use QuanticTelecom\InvoicesStorage\Factories\ItemFactoryInterface;
 use QuanticTelecom\InvoicesStorage\Factories\PaymentFactoryInterface;
 
+/**
+ * Class InvoiceMongoRepository
+ * @package QuanticTelecom\InvoicesStorage\Repositories
+ */
 class InvoiceMongoRepository implements InvoiceRepositoryInterface
 {
+    /**
+     * Collection name of the invoices.
+     *
+     * @var string
+     */
     protected $collection = "invoices";
 
     /**
      * @var InvoiceFactoryInterface
      */
     private $invoiceFactory;
+
     /**
      * @var MongoDB
      */
     private $database;
+
     /**
      * @var CustomerFactoryInterface
      */
     private $customerFactory;
+
     /**
      * @var PaymentFactoryInterface
      */
     private $paymentFactory;
+
     /**
      * @var ItemFactoryInterface
      */
     private $itemFactory;
+
     /**
      * @var GroupOfItemsFactoryInterface
      */
@@ -68,7 +82,7 @@ class InvoiceMongoRepository implements InvoiceRepositoryInterface
     /**
      * Fetch one invoice by his ID.
      *
-     * @param $id
+     * @param string $id
      * @return AbstractInvoice
      */
     public function get($id)
@@ -103,7 +117,7 @@ class InvoiceMongoRepository implements InvoiceRepositoryInterface
      * Save an invoice.
      *
      * @param AbstractInvoice $invoice
-     * @return mixed
+     * @return void
      */
     public function save(AbstractInvoice $invoice)
     {
@@ -179,6 +193,12 @@ class InvoiceMongoRepository implements InvoiceRepositoryInterface
         return $this->database->{$this->collection};
     }
 
+    /**
+     * Transform all dates in the $data array into Carbon instance.
+     *
+     * @param array $data
+     * @return array
+     */
     protected function transformDates($data)
     {
         foreach ($data as $key => $value) {

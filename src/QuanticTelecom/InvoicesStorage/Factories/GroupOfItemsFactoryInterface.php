@@ -2,6 +2,10 @@
 
 use QuanticTelecom\Invoices\Contracts\GroupOfItemsInterface;
 
+/**
+ * Interface GroupOfItemsFactoryInterface
+ * @package QuanticTelecom\InvoicesStorage\Factories
+ */
 interface GroupOfItemsFactoryInterface
 {
     /**

@@ -3,6 +3,10 @@
 use QuanticTelecom\Invoices\Contracts\GroupsContainerInterface;
 use QuanticTelecom\InvoicesStorage\Exceptions\InvalidDataForGroupsContainerFactoryException;
 
+/**
+ * Class GroupsContainerFactoryTrait
+ * @package QuanticTelecom\InvoicesStorage\Factories
+ */
 trait GroupsContainerFactoryTrait
 {
     /**

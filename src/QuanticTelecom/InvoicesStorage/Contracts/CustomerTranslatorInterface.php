@@ -3,6 +3,10 @@
 use QuanticTelecom\Invoices\Contracts\CustomerInterface as CustomerLogic;
 use QuanticTelecom\InvoicesStorage\Models\Customer as CustomerModel;
 
+/**
+ * Interface CustomerTranslatorInterface
+ * @package QuanticTelecom\InvoicesStorage\Contracts
+ */
 interface CustomerTranslatorInterface
 {
     /**

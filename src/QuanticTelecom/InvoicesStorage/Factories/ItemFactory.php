@@ -3,6 +3,10 @@
 use QuanticTelecom\Invoices\Contracts\ItemInterface;
 use QuanticTelecom\Invoices\Item;
 
+/**
+ * Class ItemFactory
+ * @package QuanticTelecom\InvoicesStorage\Factories
+ */
 class ItemFactory implements ItemFactoryInterface
 {
     /**
