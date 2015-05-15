@@ -17,6 +17,7 @@ services:
 
 before_script:
   - echo "extension = mongo.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
+  - mongod --version
   - travis_retry composer self-update
   - travis_retry composer install --prefer-source --no-interaction --dev
 
