@@ -5,6 +5,7 @@ use Mockery as m;
 use QuanticTelecom\Invoices\Contracts\CustomerInterface;
 use QuanticTelecom\Invoices\Contracts\PaymentInterface;
 use QuanticTelecom\Invoices\IncludingTaxInvoice;
+use QuanticTelecom\InvoicesStorage\Contracts\InvoiceArrayValidatorInterface;
 use QuanticTelecom\InvoicesStorage\Factories\CustomerFactoryInterface;
 use QuanticTelecom\InvoicesStorage\Factories\GroupOfItemsFactory;
 use QuanticTelecom\InvoicesStorage\Factories\InvoiceFactory;
@@ -25,6 +26,9 @@ class InvoiceMongoRepositoryTest extends InvoiceStorageTest
         $mongoClient = new MongoClient();
         $mongoClient->test->drop();
 
+        $invoiceArrayValidator = m::mock(InvoiceArrayValidatorInterface::class);
+        $invoiceArrayValidator->shouldReceive("validate")->andReturn(true);
+
         $customerFactory = m::mock(CustomerFactoryInterface::class);
         $customerFactory->shouldReceive("inverseResolution")->andReturn('customer');
         $customerFactory->shouldReceive("build")->andReturn(m::mock(CustomerInterface::class));
@@ -37,7 +41,13 @@ class InvoiceMongoRepositoryTest extends InvoiceStorageTest
 
         $groupOfItemsFactory = new GroupOfItemsFactory($itemFactory);
 
-        $invoiceFactory = new InvoiceFactory($customerFactory, $paymentFactory, $itemFactory, $groupOfItemsFactory);
+        $invoiceFactory = new InvoiceFactory(
+            $customerFactory,
+            $paymentFactory,
+            $itemFactory,
+            $groupOfItemsFactory,
+            $invoiceArrayValidator
+        );
 
         $this->repository = new InvoiceMongoRepository(
             $mongoClient->test,
