@@ -1,9 +1,11 @@
-<?php namespace QuanticTelecom\InvoicesStorage\Tests;
+<?php
+
+namespace QuanticTelecom\InvoicesStorage\Tests;
 
 use QuanticTelecom\InvoicesStorage\Validators\InvoiceArrayValidator;
 
-class InvoiceArrayValidatorTest extends InvoiceStorageTest {
-
+class InvoiceArrayValidatorTest extends InvoiceStorageTest
+{
     /**
      * @var array
      */
@@ -18,7 +20,7 @@ class InvoiceArrayValidatorTest extends InvoiceStorageTest {
         $this->arrayToValidate = [
             'id' => '42',
             'customer' => [
-                'type' => 'student'
+                'type' => 'student',
             ],
         ];
     }
