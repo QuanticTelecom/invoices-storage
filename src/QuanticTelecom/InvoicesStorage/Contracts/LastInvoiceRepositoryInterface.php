@@ -12,7 +12,7 @@ interface LastInvoiceRepositoryInterface
      *
      * @param Carbon $date
      *
-     * @return AbstractInvoice
+     * @return AbstractInvoice|null the last invoice for the provided date or null if there is no invoice
      */
     public function getLastInvoiceForMonth(Carbon $date);
 }
