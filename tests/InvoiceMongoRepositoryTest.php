@@ -1,6 +1,6 @@
 <?php
 
-namespace QuanticTelecom\InvoicesStorage\tests;
+namespace QuanticTelecom\InvoicesStorage\Tests;
 
 use MongoClient;
 use Mockery as m;

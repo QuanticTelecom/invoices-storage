@@ -1,6 +1,6 @@
 <?php
 
-namespace QuanticTelecom\InvoicesStorage\tests;
+namespace QuanticTelecom\InvoicesStorage\Tests;
 
 use Mockery as m;
 use QuanticTelecom\Invoices\AbstractInvoice;

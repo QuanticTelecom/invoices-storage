@@ -1,6 +1,6 @@
 <?php
 
-namespace QuanticTelecom\InvoicesStorage\tests;
+namespace QuanticTelecom\InvoicesStorage\Tests;
 
 use Carbon\Carbon;
 use PHPUnit_Framework_TestCase;
