@@ -9,7 +9,6 @@
     ],
     "require": {
         "php": ">=5.5.0",
-        "illuminate/support": "4.2.*",
         "quantic-telecom/storage": "dev-develop",
         "quantic-telecom/invoices": "dev-develop"
     },
