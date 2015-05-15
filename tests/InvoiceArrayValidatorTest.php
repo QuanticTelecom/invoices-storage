@@ -11,6 +11,11 @@ class InvoiceArrayValidatorTest extends InvoiceStorageTest
      */
     protected $arrayToValidate;
 
+    /**
+     * @var InvoiceArrayValidator
+     */
+    protected $invoiceArrayValidator;
+
     public function setUp()
     {
         parent::setUp();
