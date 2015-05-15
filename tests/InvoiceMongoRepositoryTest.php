@@ -5,6 +5,7 @@ namespace QuanticTelecom\InvoicesStorage\Tests;
 use Carbon\Carbon;
 use MongoClient;
 use Mockery as m;
+use QuanticTelecom\Invoices\AbstractInvoice;
 use QuanticTelecom\Invoices\Contracts\CustomerInterface;
 use QuanticTelecom\Invoices\Contracts\PaymentInterface;
 use QuanticTelecom\Invoices\IncludingTaxInvoice;
@@ -90,6 +91,7 @@ class InvoiceMongoRepositoryTest extends InvoiceStorageTest
 
         $lastInvoice = $this->repository->getLastInvoiceForMonth(Carbon::createFromDate('2015', '11', '15'));
 
+        $this->assertInstanceOf(AbstractInvoice::class, $lastInvoice);
         $this->assertEquals('2015-11-0002', $lastInvoice->getId());
     }
 
