@@ -86,6 +86,29 @@ class InvoiceMongoRepositoryTest extends InvoiceStorageTest
      */
     public function weGetTheLastInvoice()
     {
+        list($invoice1, $invoice2, $invoice3) = $this->saveThreeInvoices();
+
+        $lastInvoice = $this->repository->getLastInvoiceForMonth(Carbon::createFromDate('2015', '11', '15'));
+
+        $this->assertEquals('2015-11-0002', $lastInvoice->getId());
+    }
+
+    /**
+     * @test
+     */
+    public function weGetNullWhenThereIsNoInvoice()
+    {
+        list($invoice1, $invoice2, $invoice3) = $this->saveThreeInvoices();
+
+        $dateWithNoInvoice = Carbon::createFromDate('2015', '12', '15');
+        $lastInvoice = $this->repository->getLastInvoiceForMonth($dateWithNoInvoice);
+
+        $this->assertEquals(null, $lastInvoice);
+    }
+
+
+    protected function saveThreeInvoices()
+    {
         $invoice1 = $this->getNewInvoice(IncludingTaxInvoice::class, [
             'id' => '2015-10-0001',
             'createdAt' => '2015-10-28',
@@ -104,8 +127,6 @@ class InvoiceMongoRepositoryTest extends InvoiceStorageTest
         ]);
         $this->repository->save($invoice3);
 
-        $lastInvoice = $this->repository->getLastInvoiceForMonth(Carbon::createFromDate('2015', '11', '15'));
-
-        $this->assertEquals('2015-11-0002', $lastInvoice->getId());
+        return [$invoice1, $invoice2, $invoice3];
     }
 }
