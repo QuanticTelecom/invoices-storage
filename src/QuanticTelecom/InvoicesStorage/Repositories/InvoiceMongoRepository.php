@@ -4,13 +4,13 @@ use Carbon\Carbon;
 use MongoCollection;
 use MongoDate;
 use MongoDB;
-use MongoId;
 use QuanticTelecom\Invoices\AbstractInvoice;
-use QuanticTelecom\InvoicesStorage\Factories\CustomerFactoryInterface;
-use QuanticTelecom\InvoicesStorage\Factories\GroupOfItemsFactoryInterface;
-use QuanticTelecom\InvoicesStorage\Factories\InvoiceFactoryInterface;
-use QuanticTelecom\InvoicesStorage\Factories\ItemFactoryInterface;
-use QuanticTelecom\InvoicesStorage\Factories\PaymentFactoryInterface;
+use QuanticTelecom\InvoicesStorage\Contracts\CustomerFactoryInterface;
+use QuanticTelecom\InvoicesStorage\Contracts\GroupOfItemsFactoryInterface;
+use QuanticTelecom\InvoicesStorage\Contracts\InvoiceFactoryInterface;
+use QuanticTelecom\InvoicesStorage\Contracts\InvoiceRepositoryInterface;
+use QuanticTelecom\InvoicesStorage\Contracts\ItemFactoryInterface;
+use QuanticTelecom\InvoicesStorage\Contracts\PaymentFactoryInterface;
 
 /**
  * Class InvoiceMongoRepository

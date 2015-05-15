@@ -2,6 +2,8 @@
 
 use QuanticTelecom\Invoices\Contracts\GroupOfItemsInterface;
 use QuanticTelecom\Invoices\GroupOfItems;
+use QuanticTelecom\InvoicesStorage\Contracts\GroupOfItemsFactoryInterface;
+use QuanticTelecom\InvoicesStorage\Contracts\ItemFactoryInterface;
 use QuanticTelecom\InvoicesStorage\Exceptions\GroupOfItemsFactory\GroupOfItemsTypeNotFoundException;
 use QuanticTelecom\InvoicesStorage\Exceptions\GroupOfItemsFactory\UnknownGroupOfItemsClassException;
 use QuanticTelecom\InvoicesStorage\Exceptions\InvalidDataForGroupsContainerFactoryException;
@@ -94,6 +96,6 @@ class GroupOfItemsFactory implements GroupOfItemsFactoryInterface
      */
     protected function checkData($data = [])
     {
-        return array_key_exists('name', $data);
+
     }
 }

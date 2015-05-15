@@ -1,6 +1,7 @@
 <?php namespace QuanticTelecom\InvoicesStorage\Factories;
 
 use QuanticTelecom\Invoices\Contracts\GroupsContainerInterface;
+use QuanticTelecom\InvoicesStorage\Contracts\GroupOfItemsFactoryInterface;
 use QuanticTelecom\InvoicesStorage\Exceptions\InvalidDataForGroupsContainerFactoryException;
 
 /**
@@ -14,7 +15,7 @@ trait GroupsContainerFactoryTrait
      *
      * @param GroupsContainerInterface $groupsContainer
      * @param GroupOfItemsFactoryInterface $groupOfItemsFactory
-     * @param array $groupOfItemsData
+     * @param array $groupsOfItemsData
      * @throws InvalidDataForGroupsContainerFactoryException
      */
     protected function fillGroups(

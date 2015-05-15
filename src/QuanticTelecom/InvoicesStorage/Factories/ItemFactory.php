@@ -2,6 +2,7 @@
 
 use QuanticTelecom\Invoices\Contracts\ItemInterface;
 use QuanticTelecom\Invoices\Item;
+use QuanticTelecom\InvoicesStorage\Contracts\ItemFactoryInterface;
 
 /**
  * Class ItemFactory

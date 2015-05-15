@@ -4,6 +4,12 @@ use QuanticTelecom\Invoices\AbstractInvoice;
 use QuanticTelecom\Invoices\Contracts\InvoiceInterface;
 use QuanticTelecom\Invoices\ExcludingTaxInvoice;
 use QuanticTelecom\Invoices\IncludingTaxInvoice;
+use QuanticTelecom\InvoicesStorage\Contracts\CustomerFactoryInterface;
+use QuanticTelecom\InvoicesStorage\Contracts\GroupOfItemsFactoryInterface;
+use QuanticTelecom\InvoicesStorage\Contracts\InvoiceArrayValidatorInterface;
+use QuanticTelecom\InvoicesStorage\Contracts\InvoiceFactoryInterface;
+use QuanticTelecom\InvoicesStorage\Contracts\ItemFactoryInterface;
+use QuanticTelecom\InvoicesStorage\Contracts\PaymentFactoryInterface;
 use QuanticTelecom\InvoicesStorage\Exceptions\InvoiceFactory\InvalidDataForInvoiceFactoryException;
 use QuanticTelecom\InvoicesStorage\Exceptions\InvoiceFactory\InvoiceTypeNotFoundException;
 use QuanticTelecom\InvoicesStorage\Exceptions\InvoiceFactory\UnknownInvoiceClassException;
@@ -21,39 +27,47 @@ class InvoiceFactory implements InvoiceFactoryInterface
     /**
      * @var CustomerFactoryInterface
      */
-    private $customerFactory;
+    protected $customerFactory;
 
     /**
      * @var PaymentFactoryInterface
      */
-    private $paymentFactory;
+    protected $paymentFactory;
 
     /**
      * @var ItemFactoryInterface
      */
-    private $itemFactory;
+    protected $itemFactory;
 
     /**
      * @var GroupOfItemsFactoryInterface
      */
-    private $groupOfItemsFactory;
+    protected $groupOfItemsFactory;
+
+    /**
+     * @var InvoiceArrayValidatorInterface
+     */
+    protected $invoiceArrayValidator;
 
     /**
      * @param CustomerFactoryInterface $customerFactory
      * @param PaymentFactoryInterface $paymentFactory
      * @param ItemFactoryInterface $itemFactory
      * @param GroupOfItemsFactoryInterface $groupOfItemsFactory
+     * @param InvoiceArrayValidatorInterface $invoiceArrayValidator
      */
     public function __construct(
         CustomerFactoryInterface $customerFactory,
         PaymentFactoryInterface $paymentFactory,
         ItemFactoryInterface $itemFactory,
-        GroupOfItemsFactoryInterface $groupOfItemsFactory
+        GroupOfItemsFactoryInterface $groupOfItemsFactory,
+        InvoiceArrayValidatorInterface $invoiceArrayValidator
     ) {
         $this->customerFactory = $customerFactory;
         $this->paymentFactory = $paymentFactory;
         $this->itemFactory = $itemFactory;
         $this->groupOfItemsFactory = $groupOfItemsFactory;
+        $this->invoiceArrayValidator = $invoiceArrayValidator;
     }
 
     /**
@@ -104,9 +118,9 @@ class InvoiceFactory implements InvoiceFactoryInterface
      * @return AbstractInvoice
      * @throws InvalidDataForInvoiceFactoryException
      */
-    private function buildAbstractInvoice($class, $data = [])
+    protected function buildAbstractInvoice($class, $data = [])
     {
-        if (!$this->checkData($data)) {
+        if (!$this->invoiceArrayValidator->validate($data)) {
             throw new InvalidDataForInvoiceFactoryException;
         }
 
@@ -126,7 +140,7 @@ class InvoiceFactory implements InvoiceFactoryInterface
      * @return ExcludingTaxInvoice
      * @throws InvalidDataForInvoiceFactoryException
      */
-    private function buildExcludingTaxInvoice($data = [])
+    protected function buildExcludingTaxInvoice($data = [])
     {
         return $this->buildAbstractInvoice(ExcludingTaxInvoice::class, $data);
     }
@@ -138,23 +152,9 @@ class InvoiceFactory implements InvoiceFactoryInterface
      * @return IncludingTaxInvoice
      * @throws InvalidDataForInvoiceFactoryException
      */
-    private function buildIncludingTaxInvoice($data = [])
+    protected function buildIncludingTaxInvoice($data = [])
     {
         return $this->buildAbstractInvoice(IncludingTaxInvoice::class, $data);
-    }
-
-    /**
-     * Check if all necessary data is present
-     *
-     * @param array $data
-     * @return bool
-     */
-    private function checkData($data = [])
-    {
-        return  array_key_exists('id', $data)
-            and array_key_exists('customer', $data)
-            and is_array($data['customer'])
-            and array_key_exists('type', $data['customer']);
     }
 
     /**
@@ -163,7 +163,7 @@ class InvoiceFactory implements InvoiceFactoryInterface
      * @param InvoiceInterface $invoice
      * @param array $data
      */
-    private function fillInvoice(InvoiceInterface $invoice, $data = [])
+    protected function fillInvoice(InvoiceInterface $invoice, $data = [])
     {
         if (isset($data['createdAt'])) {
             $invoice->setCreatedAt($data['createdAt']);
@@ -194,7 +194,7 @@ class InvoiceFactory implements InvoiceFactoryInterface
      * @return bool
      * @throws InvalidDataForInvoiceFactoryException
      */
-    private function checkPayment($data = [])
+    protected function checkPayment($data = [])
     {
         if (isset($data['payment'])) {
             if (is_array($data['payment']) and array_key_exists('type', $data['payment'])) {
