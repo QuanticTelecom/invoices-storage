@@ -1,8 +1,9 @@
-<?php namespace QuanticTelecom\InvoicesStorage\Exceptions\GroupOfItemsFactory;
+<?php
+
+namespace QuanticTelecom\InvoicesStorage\Exceptions\GroupOfItemsFactory;
 
 /**
- * Class GroupOfItemsTypeNotFoundException
- * @package QuanticTelecom\InvoicesStorage\Exceptions\GroupOfItemsFactory
+ * Class GroupOfItemsTypeNotFoundException.
  */
 class GroupOfItemsTypeNotFoundException extends GroupOfItemsFactoryException
 {

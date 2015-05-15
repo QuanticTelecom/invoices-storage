@@ -1,20 +1,23 @@
-<?php namespace QuanticTelecom\InvoicesStorage\Factories;
+<?php
+
+namespace QuanticTelecom\InvoicesStorage\Factories;
+
 use QuanticTelecom\Invoices\Contracts\ItemsContainerInterface;
 use QuanticTelecom\InvoicesStorage\Contracts\ItemFactoryInterface;
 use QuanticTelecom\InvoicesStorage\Exceptions\InvalidDataForItemsContainerFactoryException;
 
 /**
- * Class ItemsContainerFactoryTrait
- * @package QuanticTelecom\InvoicesStorage\Factories
+ * Class ItemsContainerFactoryTrait.
  */
 trait ItemsContainerFactoryTrait
 {
     /**
-     * Fill the items container with all items
+     * Fill the items container with all items.
      *
      * @param ItemsContainerInterface $itemsContainer
-     * @param ItemFactoryInterface $itemFactory
-     * @param array $itemsData
+     * @param ItemFactoryInterface    $itemFactory
+     * @param array                   $itemsData
+     *
      * @throws InvalidDataForItemsContainerFactoryException
      */
     protected function fillItems(
@@ -23,7 +26,7 @@ trait ItemsContainerFactoryTrait
         $itemsData = []
     ) {
         if (!is_array($itemsData)) {
-            throw new InvalidDataForItemsContainerFactoryException;
+            throw new InvalidDataForItemsContainerFactoryException();
         }
 
         foreach ($itemsData as $itemData) {
@@ -34,16 +37,16 @@ trait ItemsContainerFactoryTrait
     }
 
     /**
-     * Throw an exception if 'type' key is not present
+     * Throw an exception if 'type' key is not present.
      *
      * @param array $itemData
-     * @return void
+     *
      * @throws InvalidDataForItemsContainerFactoryException
      */
     private function checkItemData($itemData = [])
     {
         if (!is_array($itemData) or !array_key_exists('type', $itemData)) {
-            throw new InvalidDataForItemsContainerFactoryException;
+            throw new InvalidDataForItemsContainerFactoryException();
         }
     }
 }

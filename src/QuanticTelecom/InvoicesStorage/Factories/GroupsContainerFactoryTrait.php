@@ -1,21 +1,23 @@
-<?php namespace QuanticTelecom\InvoicesStorage\Factories;
+<?php
+
+namespace QuanticTelecom\InvoicesStorage\Factories;
+
 use QuanticTelecom\Invoices\Contracts\GroupsContainerInterface;
 use QuanticTelecom\InvoicesStorage\Contracts\GroupOfItemsFactoryInterface;
 use QuanticTelecom\InvoicesStorage\Exceptions\InvalidDataForGroupsContainerFactoryException;
 
-
 /**
- * Class GroupsContainerFactoryTrait
- * @package QuanticTelecom\InvoicesStorage\Factories
+ * Class GroupsContainerFactoryTrait.
  */
 trait GroupsContainerFactoryTrait
 {
     /**
-     * Fill the items container with all items
+     * Fill the items container with all items.
      *
-     * @param GroupsContainerInterface $groupsContainer
+     * @param GroupsContainerInterface     $groupsContainer
      * @param GroupOfItemsFactoryInterface $groupOfItemsFactory
-     * @param array $groupsOfItemsData
+     * @param array                        $groupsOfItemsData
+     *
      * @throws InvalidDataForGroupsContainerFactoryException
      */
     protected function fillGroups(
@@ -24,7 +26,7 @@ trait GroupsContainerFactoryTrait
         $groupsOfItemsData = []
     ) {
         if (!is_array($groupsOfItemsData)) {
-            throw new InvalidDataForGroupsContainerFactoryException;
+            throw new InvalidDataForGroupsContainerFactoryException();
         }
 
         foreach ($groupsOfItemsData as $groupOfItemsData) {
@@ -35,16 +37,16 @@ trait GroupsContainerFactoryTrait
     }
 
     /**
-     * Throw an exception if 'type' key is not present
+     * Throw an exception if 'type' key is not present.
      *
      * @param array $groupOfItemsData
-     * @return void
+     *
      * @throws InvalidDataForGroupsContainerFactoryException
      */
     private function checkGroupOfItemsData($groupOfItemsData = [])
     {
         if (!is_array($groupOfItemsData) or !array_key_exists('type', $groupOfItemsData)) {
-            throw new InvalidDataForGroupsContainerFactoryException;
+            throw new InvalidDataForGroupsContainerFactoryException();
         }
     }
 }

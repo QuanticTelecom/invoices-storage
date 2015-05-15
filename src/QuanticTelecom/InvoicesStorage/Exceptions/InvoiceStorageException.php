@@ -1,10 +1,11 @@
-<?php namespace QuanticTelecom\InvoicesStorage\Exceptions;
+<?php
+
+namespace QuanticTelecom\InvoicesStorage\Exceptions;
 
 use RuntimeException;
 
 /**
- * Class InvoiceStorageException
- * @package QuanticTelecom\InvoicesStorage\Exceptions
+ * Class InvoiceStorageException.
  */
 class InvoiceStorageException extends RuntimeException
 {

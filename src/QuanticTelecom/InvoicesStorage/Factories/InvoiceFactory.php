@@ -1,4 +1,6 @@
-<?php namespace QuanticTelecom\InvoicesStorage\Factories;
+<?php
+
+namespace QuanticTelecom\InvoicesStorage\Factories;
 
 use QuanticTelecom\Invoices\AbstractInvoice;
 use QuanticTelecom\Invoices\ExcludingTaxInvoice;
@@ -16,8 +18,7 @@ use QuanticTelecom\InvoicesStorage\Exceptions\InvoiceFactory\UnknownInvoiceClass
 use QuanticTelecom\InvoicesStorage\IdGenerator;
 
 /**
- * Class InvoiceFactory
- * @package QuanticTelecom\InvoicesStorage\Factories
+ * Class InvoiceFactory.
  */
 class InvoiceFactory implements InvoiceFactoryInterface
 {
@@ -50,10 +51,10 @@ class InvoiceFactory implements InvoiceFactoryInterface
     protected $invoiceArrayValidator;
 
     /**
-     * @param CustomerFactoryInterface $customerFactory
-     * @param PaymentFactoryInterface $paymentFactory
-     * @param ItemFactoryInterface $itemFactory
-     * @param GroupOfItemsFactoryInterface $groupOfItemsFactory
+     * @param CustomerFactoryInterface       $customerFactory
+     * @param PaymentFactoryInterface        $paymentFactory
+     * @param ItemFactoryInterface           $itemFactory
+     * @param GroupOfItemsFactoryInterface   $groupOfItemsFactory
      * @param InvoiceArrayValidatorInterface $invoiceArrayValidator
      */
     public function __construct(
@@ -74,21 +75,23 @@ class InvoiceFactory implements InvoiceFactoryInterface
      * Build a new InvoiceInterface instance.
      *
      * @param string $type type of invoice
-     * @param array $data all data to create an invoice
+     * @param array  $data all data to create an invoice
+     *
      * @return InvoiceInterface
+     *
      * @throws InvalidDataForInvoiceFactoryException|InvoiceTypeNotFoundException
      */
     public function build($type, $data = [])
     {
         switch ($type) {
-            case "excludingTaxInvoice":
+            case 'excludingTaxInvoice':
                 return $this->buildExcludingTaxInvoice($data);
                 break;
-            case "includingTaxInvoice":
+            case 'includingTaxInvoice':
                 return $this->buildIncludingTaxInvoice($data);
                 break;
             default:
-                throw new InvoiceTypeNotFoundException;
+                throw new InvoiceTypeNotFoundException();
         }
     }
 
@@ -96,17 +99,19 @@ class InvoiceFactory implements InvoiceFactoryInterface
      * Get the type of invoice.
      *
      * @param InvoiceInterface $class
+     *
      * @return string type of invoice
+     *
      * @throws UnknownInvoiceClassException
      */
     public function inverseResolution(InvoiceInterface $class)
     {
         if ($class instanceof ExcludingTaxInvoice) {
-            return "excludingTaxInvoice";
+            return 'excludingTaxInvoice';
         } elseif ($class instanceof IncludingTaxInvoice) {
-            return "includingTaxInvoice";
+            return 'includingTaxInvoice';
         } else {
-            throw new UnknownInvoiceClassException;
+            throw new UnknownInvoiceClassException();
         }
     }
 
@@ -115,13 +120,15 @@ class InvoiceFactory implements InvoiceFactoryInterface
      *
      * @param $class AbstractInvoice
      * @param array $data
+     *
      * @return AbstractInvoice
+     *
      * @throws InvalidDataForInvoiceFactoryException
      */
     protected function buildAbstractInvoice($class, $data = [])
     {
         if (!$this->invoiceArrayValidator->validate($data)) {
-            throw new InvalidDataForInvoiceFactoryException;
+            throw new InvalidDataForInvoiceFactoryException();
         }
 
         $idGenerator = new IdGenerator($data['id']);
@@ -137,7 +144,9 @@ class InvoiceFactory implements InvoiceFactoryInterface
      * Build an ExcludingTaxInvoice implementation.
      *
      * @param array $data
+     *
      * @return ExcludingTaxInvoice
+     *
      * @throws InvalidDataForInvoiceFactoryException
      */
     protected function buildExcludingTaxInvoice($data = [])
@@ -149,7 +158,9 @@ class InvoiceFactory implements InvoiceFactoryInterface
      * Build an IncludingTaxInvoice implementation.
      *
      * @param array $data
+     *
      * @return IncludingTaxInvoice
+     *
      * @throws InvalidDataForInvoiceFactoryException
      */
     protected function buildIncludingTaxInvoice($data = [])
@@ -161,7 +172,7 @@ class InvoiceFactory implements InvoiceFactoryInterface
      * Fill the invoice with all required data.
      *
      * @param InvoiceInterface $invoice
-     * @param array $data
+     * @param array            $data
      */
     protected function fillInvoice(InvoiceInterface $invoice, $data = [])
     {
@@ -191,7 +202,9 @@ class InvoiceFactory implements InvoiceFactoryInterface
      * Check if there is a payment in the data array.
      *
      * @param array $data
+     *
      * @return bool
+     *
      * @throws InvalidDataForInvoiceFactoryException
      */
     protected function checkPayment($data = [])
@@ -200,7 +213,7 @@ class InvoiceFactory implements InvoiceFactoryInterface
             if (is_array($data['payment']) and array_key_exists('type', $data['payment'])) {
                 return true;
             } else {
-                throw new InvalidDataForInvoiceFactoryException;
+                throw new InvalidDataForInvoiceFactoryException();
             }
         } else {
             return false;

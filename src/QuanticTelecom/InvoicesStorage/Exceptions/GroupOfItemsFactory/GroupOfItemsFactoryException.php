@@ -1,10 +1,11 @@
-<?php namespace QuanticTelecom\InvoicesStorage\Exceptions\GroupOfItemsFactory;
+<?php
+
+namespace QuanticTelecom\InvoicesStorage\Exceptions\GroupOfItemsFactory;
 
 use QuanticTelecom\InvoicesStorage\Exceptions\InvoiceStorageException;
 
 /**
- * Class GroupOfItemsFactoryException
- * @package QuanticTelecom\InvoicesStorage\Exceptions\GroupOfItemsFactory
+ * Class GroupOfItemsFactoryException.
  */
 class GroupOfItemsFactoryException extends InvoiceStorageException
 {

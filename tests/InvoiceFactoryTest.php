@@ -1,4 +1,6 @@
-<?php namespace QuanticTelecom\InvoicesStorage\Tests;
+<?php
+
+namespace QuanticTelecom\InvoicesStorage\Tests;
 
 use Mockery as m;
 use QuanticTelecom\Invoices\AbstractInvoice;
@@ -64,7 +66,7 @@ class InvoiceFactoryTest extends InvoiceStorageTest
     public function weGetAPaidInvoiceIfPaymentKeyIsSet()
     {
         $data = $this->getFactoryData([
-            'payment' => true
+            'payment' => true,
         ]);
 
         $includingTaxInvoice = $this->invoiceFactory->build('includingTaxInvoice', $data);
@@ -80,7 +82,7 @@ class InvoiceFactoryTest extends InvoiceStorageTest
     public function weGetAnInvoiceWithItemsIfItemsKeyIsSet()
     {
         $data = $this->getFactoryData([
-            'items' => true
+            'items' => true,
         ]);
 
         $includingTaxInvoice = $this->invoiceFactory->build('includingTaxInvoice', $data);
@@ -96,7 +98,7 @@ class InvoiceFactoryTest extends InvoiceStorageTest
     public function weGetAnInvoiceWithGroupsIfGroupsKeyIsSet()
     {
         $data = $this->getFactoryData([
-            'groups' => true
+            'groups' => true,
         ]);
 
         $includingTaxInvoice = $this->invoiceFactory->build('includingTaxInvoice', $data);

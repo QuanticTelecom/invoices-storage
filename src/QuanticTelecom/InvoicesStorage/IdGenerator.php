@@ -1,10 +1,11 @@
-<?php namespace QuanticTelecom\InvoicesStorage;
+<?php
+
+namespace QuanticTelecom\InvoicesStorage;
 
 use QuanticTelecom\Invoices\Contracts\IdGeneratorInterface;
 
 /**
- * Class IdGenerator
- * @package QuanticTelecom\InvoicesStorage
+ * Class IdGenerator.
  */
 class IdGenerator implements IdGeneratorInterface
 {
@@ -22,7 +23,7 @@ class IdGenerator implements IdGeneratorInterface
     }
 
     /**
-     * Return a new ID to use for an invoice
+     * Return a new ID to use for an invoice.
      *
      * @return string
      */

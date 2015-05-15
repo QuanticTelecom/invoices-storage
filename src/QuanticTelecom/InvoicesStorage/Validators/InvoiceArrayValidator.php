@@ -1,14 +1,17 @@
-<?php namespace QuanticTelecom\InvoicesStorage\Validators;
+<?php
+
+namespace QuanticTelecom\InvoicesStorage\Validators;
 
 use QuanticTelecom\InvoicesStorage\Contracts\InvoiceArrayValidatorInterface;
 
-class InvoiceArrayValidator implements InvoiceArrayValidatorInterface {
-
+class InvoiceArrayValidator implements InvoiceArrayValidatorInterface
+{
     /**
      * Check if every necessary data is provided.
      *
      * @param array $data invoice's data
-     * @return boolean
+     *
+     * @return bool
      */
     public function validate($data)
     {

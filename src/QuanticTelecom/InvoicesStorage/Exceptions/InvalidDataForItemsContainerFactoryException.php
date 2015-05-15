@@ -1,8 +1,9 @@
-<?php namespace QuanticTelecom\InvoicesStorage\Exceptions;
+<?php
+
+namespace QuanticTelecom\InvoicesStorage\Exceptions;
 
 /**
- * Class InvalidDataForItemsContainerFactoryException
- * @package QuanticTelecom\InvoicesStorage\Exceptions
+ * Class InvalidDataForItemsContainerFactoryException.
  */
 class InvalidDataForItemsContainerFactoryException extends InvoiceStorageException
 {

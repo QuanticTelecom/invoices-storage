@@ -1,4 +1,6 @@
-<?php namespace QuanticTelecom\InvoicesStorage\Tests;
+<?php
+
+namespace QuanticTelecom\InvoicesStorage\Tests;
 
 use MongoClient;
 use Mockery as m;
@@ -28,18 +30,18 @@ class InvoiceMongoRepositoryTest extends InvoiceStorageTest
         $mongoClient->test->drop();
 
         $invoiceArrayValidator = m::mock(InvoiceArrayValidatorInterface::class);
-        $invoiceArrayValidator->shouldReceive("validate")->andReturn(true);
+        $invoiceArrayValidator->shouldReceive('validate')->andReturn(true);
 
         $groupOfItemsArrayValidator = m::mock(GroupOfItemsArrayValidatorInterface::class);
-        $groupOfItemsArrayValidator->shouldReceive("validate")->andReturn(true);
+        $groupOfItemsArrayValidator->shouldReceive('validate')->andReturn(true);
 
         $customerFactory = m::mock(CustomerFactoryInterface::class);
-        $customerFactory->shouldReceive("inverseResolution")->andReturn('customer');
-        $customerFactory->shouldReceive("build")->andReturn(m::mock(CustomerInterface::class));
+        $customerFactory->shouldReceive('inverseResolution')->andReturn('customer');
+        $customerFactory->shouldReceive('build')->andReturn(m::mock(CustomerInterface::class));
 
         $paymentFactory = m::mock(PaymentFactoryInterface::class);
-        $paymentFactory->shouldReceive("inverseResolution")->andReturn('payment');
-        $paymentFactory->shouldReceive("build")->andReturn(m::mock(PaymentInterface::class));
+        $paymentFactory->shouldReceive('inverseResolution')->andReturn('payment');
+        $paymentFactory->shouldReceive('build')->andReturn(m::mock(PaymentInterface::class));
 
         $itemFactory = new ItemFactory();
 

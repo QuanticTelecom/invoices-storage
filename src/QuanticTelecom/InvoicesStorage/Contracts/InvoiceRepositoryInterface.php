@@ -1,10 +1,11 @@
-<?php namespace QuanticTelecom\InvoicesStorage\Contracts;
+<?php
+
+namespace QuanticTelecom\InvoicesStorage\Contracts;
 
 use QuanticTelecom\Invoices\AbstractInvoice;
 
 /**
- * Interface InvoiceRepositoryInterface
- * @package QuanticTelecom\InvoicesStorage\Repositories
+ * Interface InvoiceRepositoryInterface.
  */
 interface InvoiceRepositoryInterface
 {
@@ -12,6 +13,7 @@ interface InvoiceRepositoryInterface
      * Fetch one invoice by his ID.
      *
      * @param $id
+     *
      * @return AbstractInvoice
      */
     public function get($id);
@@ -27,6 +29,7 @@ interface InvoiceRepositoryInterface
      * Save an invoice.
      *
      * @param AbstractInvoice $invoice
+     *
      * @return mixed
      */
     public function save(AbstractInvoice $invoice);

@@ -1,4 +1,6 @@
-<?php namespace QuanticTelecom\InvoicesStorage\Factories;
+<?php
+
+namespace QuanticTelecom\InvoicesStorage\Factories;
 
 use QuanticTelecom\Invoices\Contracts\GroupOfItemsInterface;
 use QuanticTelecom\Invoices\GroupOfItems;
@@ -10,8 +12,7 @@ use QuanticTelecom\InvoicesStorage\Exceptions\GroupOfItemsFactory\UnknownGroupOf
 use QuanticTelecom\InvoicesStorage\Exceptions\InvalidDataForGroupsContainerFactoryException;
 
 /**
- * Class GroupOfItemsFactory
- * @package QuanticTelecom\InvoicesStorage\Factories
+ * Class GroupOfItemsFactory.
  */
 class GroupOfItemsFactory implements GroupOfItemsFactoryInterface
 {
@@ -29,14 +30,13 @@ class GroupOfItemsFactory implements GroupOfItemsFactoryInterface
     protected $groupOfItemsArrayValidator;
 
     /**
-     * @param ItemFactoryInterface $itemFactory
+     * @param ItemFactoryInterface                $itemFactory
      * @param GroupOfItemsArrayValidatorInterface $groupOfItemsArrayValidator
      */
     public function __construct(
         ItemFactoryInterface $itemFactory,
         GroupOfItemsArrayValidatorInterface $groupOfItemsArrayValidator
-    )
-    {
+    ) {
         $this->itemFactory = $itemFactory;
         $this->groupOfItemsArrayValidator = $groupOfItemsArrayValidator;
     }
@@ -45,17 +45,18 @@ class GroupOfItemsFactory implements GroupOfItemsFactoryInterface
      * Build a new GroupOfItemsInterface instance.
      *
      * @param string $type type of the group of items
-     * @param array $data all data to create a group of items
+     * @param array  $data all data to create a group of items
+     *
      * @return GroupOfItemsInterface
      */
     public function build($type, $data = [])
     {
         switch ($type) {
-            case "groupOfItems":
+            case 'groupOfItems':
                 return $this->buildGroupOfItems($data);
                 break;
             default:
-                throw new GroupOfItemsTypeNotFoundException;
+                throw new GroupOfItemsTypeNotFoundException();
         }
     }
 
@@ -63,14 +64,15 @@ class GroupOfItemsFactory implements GroupOfItemsFactoryInterface
      * Get the type of the group of items.
      *
      * @param GroupOfItemsInterface $class
+     *
      * @return string type of group of items
      */
     public function inverseResolution(GroupOfItemsInterface $class)
     {
         if ($class instanceof GroupOfItems) {
-            return "groupOfItems";
+            return 'groupOfItems';
         } else {
-            throw new UnknownGroupOfItemsClassException;
+            throw new UnknownGroupOfItemsClassException();
         }
     }
 
@@ -78,12 +80,13 @@ class GroupOfItemsFactory implements GroupOfItemsFactoryInterface
      * Build a new GroupOfItems implementation instance.
      *
      * @param array $data
+     *
      * @return GroupOfItems
      */
     protected function buildGroupOfItems($data = [])
     {
         if (!$this->groupOfItemsArrayValidator->validate($data)) {
-            throw new InvalidDataForGroupsContainerFactoryException;
+            throw new InvalidDataForGroupsContainerFactoryException();
         }
 
         $groupOfItems = new GroupOfItems($data['name']);

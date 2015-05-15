@@ -1,14 +1,17 @@
-<?php namespace QuanticTelecom\InvoicesStorage\Validators;
+<?php
+
+namespace QuanticTelecom\InvoicesStorage\Validators;
 
 use QuanticTelecom\InvoicesStorage\Contracts\GroupOfItemsArrayValidatorInterface;
 
-class GroupOfItemsArrayValidator implements GroupOfItemsArrayValidatorInterface {
-
+class GroupOfItemsArrayValidator implements GroupOfItemsArrayValidatorInterface
+{
     /**
      * Check if every necessary data is provided.
      *
      * @param array $data group of items' data
-     * @return boolean
+     *
+     * @return bool
      */
     public function validate($data)
     {

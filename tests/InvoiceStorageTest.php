@@ -1,4 +1,6 @@
-<?php namespace QuanticTelecom\InvoicesStorage\Tests;
+<?php
+
+namespace QuanticTelecom\InvoicesStorage\Tests;
 
 use Carbon\Carbon;
 use PHPUnit_Framework_TestCase;
@@ -73,7 +75,7 @@ abstract class InvoiceStorageTest extends PHPUnit_Framework_TestCase
     public function setUp()
     {
         $this->invoiceArrayValidator = m::mock(InvoiceArrayValidatorInterface::class);
-        $this->invoiceArrayValidator->shouldReceive("validate")->andReturn(true);
+        $this->invoiceArrayValidator->shouldReceive('validate')->andReturn(true);
 
         $this->customer = m::mock(CustomerInterface::class);
         $this->customerFactory = m::mock(CustomerFactoryInterface::class);
@@ -125,7 +127,7 @@ abstract class InvoiceStorageTest extends PHPUnit_Framework_TestCase
 
     /**
      * @param InvoiceInterface $invoice
-     * @param array $itemsData
+     * @param array            $itemsData
      */
     protected function assertItemsAreSet(InvoiceInterface $invoice, $itemsData)
     {
@@ -138,7 +140,7 @@ abstract class InvoiceStorageTest extends PHPUnit_Framework_TestCase
 
     /**
      * @param InvoiceInterface $invoice
-     * @param array $groupsData
+     * @param array            $groupsData
      */
     protected function assertGroupsAreSet(InvoiceInterface $invoice, $groupsData)
     {
@@ -154,7 +156,7 @@ abstract class InvoiceStorageTest extends PHPUnit_Framework_TestCase
         $data = [
             'id' => $this->invoiceData['id'],
             'customer' => [
-                'type' => 'customer'
+                'type' => 'customer',
             ],
             'createdAt' => Carbon::createFromFormat('Y-m-j', $this->invoiceData['createdAt']),
             'dueDate' => Carbon::createFromFormat('Y-m-j', $this->invoiceData['dueDate']),

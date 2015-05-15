@@ -1,12 +1,13 @@
-<?php namespace QuanticTelecom\InvoicesStorage\Factories;
+<?php
+
+namespace QuanticTelecom\InvoicesStorage\Factories;
 
 use QuanticTelecom\Invoices\Contracts\ItemInterface;
 use QuanticTelecom\Invoices\Item;
 use QuanticTelecom\InvoicesStorage\Contracts\ItemFactoryInterface;
 
 /**
- * Class ItemFactory
- * @package QuanticTelecom\InvoicesStorage\Factories
+ * Class ItemFactory.
  */
 class ItemFactory implements ItemFactoryInterface
 {
@@ -14,7 +15,8 @@ class ItemFactory implements ItemFactoryInterface
      * Build a new ItemInterface instance.
      *
      * @param string $type type of the item
-     * @param array $data all data to create an item
+     * @param array  $data all data to create an item
+     *
      * @return ItemInterface
      */
     public function build($type, $data = [])
@@ -33,10 +35,11 @@ class ItemFactory implements ItemFactoryInterface
      * Get the type of item.
      *
      * @param ItemInterface $class
+     *
      * @return string type of item
      */
     public function inverseResolution(ItemInterface $class)
     {
-        return "item";
+        return 'item';
     }
 }

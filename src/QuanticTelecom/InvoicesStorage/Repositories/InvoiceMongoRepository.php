@@ -1,4 +1,6 @@
-<?php namespace QuanticTelecom\InvoicesStorage\Repositories;
+<?php
+
+namespace QuanticTelecom\InvoicesStorage\Repositories;
 
 use Carbon\Carbon;
 use MongoCollection;
@@ -13,8 +15,7 @@ use QuanticTelecom\InvoicesStorage\Contracts\ItemFactoryInterface;
 use QuanticTelecom\InvoicesStorage\Contracts\PaymentFactoryInterface;
 
 /**
- * Class InvoiceMongoRepository
- * @package QuanticTelecom\InvoicesStorage\Repositories
+ * Class InvoiceMongoRepository.
  */
 class InvoiceMongoRepository implements InvoiceRepositoryInterface
 {
@@ -23,7 +24,7 @@ class InvoiceMongoRepository implements InvoiceRepositoryInterface
      *
      * @var string
      */
-    protected $collection = "invoices";
+    protected $collection = 'invoices';
 
     /**
      * @var InvoiceFactoryInterface
@@ -56,11 +57,11 @@ class InvoiceMongoRepository implements InvoiceRepositoryInterface
     private $groupOfItemsFactory;
 
     /**
-     * @param MongoDB $database
-     * @param InvoiceFactoryInterface $invoiceFactory
-     * @param CustomerFactoryInterface $customerFactory
-     * @param PaymentFactoryInterface $paymentFactory
-     * @param ItemFactoryInterface $itemFactory
+     * @param MongoDB                      $database
+     * @param InvoiceFactoryInterface      $invoiceFactory
+     * @param CustomerFactoryInterface     $customerFactory
+     * @param PaymentFactoryInterface      $paymentFactory
+     * @param ItemFactoryInterface         $itemFactory
      * @param GroupOfItemsFactoryInterface $groupOfItemsFactory
      */
     public function __construct(
@@ -78,17 +79,18 @@ class InvoiceMongoRepository implements InvoiceRepositoryInterface
         $this->itemFactory = $itemFactory;
         $this->groupOfItemsFactory = $groupOfItemsFactory;
     }
-    
+
     /**
      * Fetch one invoice by his ID.
      *
      * @param string $id
+     *
      * @return AbstractInvoice
      */
     public function get($id)
     {
         $data = $this->getCollection()->findOne([
-            'id' =>$id
+            'id' => $id,
         ]);
         $data = $this->transformDates($data);
 
@@ -117,7 +119,6 @@ class InvoiceMongoRepository implements InvoiceRepositoryInterface
      * Save an invoice.
      *
      * @param AbstractInvoice $invoice
-     * @return void
      */
     public function save(AbstractInvoice $invoice)
     {
@@ -169,7 +170,7 @@ class InvoiceMongoRepository implements InvoiceRepositoryInterface
             $groups[] = [
                 'type' => $this->groupOfItemsFactory->inverseResolution($group),
                 'name' => $group->getName(),
-                'items' => $items
+                'items' => $items,
             ];
         }
         $document['groups'] = $groups;
@@ -197,6 +198,7 @@ class InvoiceMongoRepository implements InvoiceRepositoryInterface
      * Transform all dates in the $data array into Carbon instance.
      *
      * @param array $data
+     *
      * @return array
      */
     protected function transformDates($data)
