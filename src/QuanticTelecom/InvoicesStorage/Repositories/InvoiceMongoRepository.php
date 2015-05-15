@@ -234,6 +234,7 @@ class InvoiceMongoRepository implements InvoiceRepositoryInterface, LastInvoiceR
 
         if (count($invoiceData['result']) != 0) {
             $invoiceData = $this->transformDates($invoiceData['result'][0]);
+
             return $this->invoiceFactory->build($invoiceData['type'], $invoiceData);
         } else {
             return null;

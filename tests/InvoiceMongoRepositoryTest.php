@@ -106,7 +106,6 @@ class InvoiceMongoRepositoryTest extends InvoiceStorageTest
         $this->assertEquals(null, $lastInvoice);
     }
 
-
     protected function saveThreeInvoices()
     {
         $invoice1 = $this->getNewInvoice(IncludingTaxInvoice::class, [
