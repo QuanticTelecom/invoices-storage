@@ -1,5 +1,4 @@
 <?php namespace QuanticTelecom\InvoicesStorage\Factories;
-
 use QuanticTelecom\Invoices\Contracts\ItemsContainerInterface;
 use QuanticTelecom\InvoicesStorage\Contracts\ItemFactoryInterface;
 use QuanticTelecom\InvoicesStorage\Exceptions\InvalidDataForItemsContainerFactoryException;

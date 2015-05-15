@@ -1,13 +1,13 @@
 <?php namespace QuanticTelecom\InvoicesStorage\Factories;
 
 use QuanticTelecom\Invoices\AbstractInvoice;
-use QuanticTelecom\Invoices\Contracts\InvoiceInterface;
 use QuanticTelecom\Invoices\ExcludingTaxInvoice;
 use QuanticTelecom\Invoices\IncludingTaxInvoice;
 use QuanticTelecom\InvoicesStorage\Contracts\CustomerFactoryInterface;
 use QuanticTelecom\InvoicesStorage\Contracts\GroupOfItemsFactoryInterface;
 use QuanticTelecom\InvoicesStorage\Contracts\InvoiceArrayValidatorInterface;
 use QuanticTelecom\InvoicesStorage\Contracts\InvoiceFactoryInterface;
+use QuanticTelecom\Invoices\Contracts\InvoiceInterface;
 use QuanticTelecom\InvoicesStorage\Contracts\ItemFactoryInterface;
 use QuanticTelecom\InvoicesStorage\Contracts\PaymentFactoryInterface;
 use QuanticTelecom\InvoicesStorage\Exceptions\InvoiceFactory\InvalidDataForInvoiceFactoryException;

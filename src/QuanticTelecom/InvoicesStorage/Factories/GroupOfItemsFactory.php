@@ -2,6 +2,7 @@
 
 use QuanticTelecom\Invoices\Contracts\GroupOfItemsInterface;
 use QuanticTelecom\Invoices\GroupOfItems;
+use QuanticTelecom\InvoicesStorage\Contracts\GroupOfItemsArrayValidatorInterface;
 use QuanticTelecom\InvoicesStorage\Contracts\GroupOfItemsFactoryInterface;
 use QuanticTelecom\InvoicesStorage\Contracts\ItemFactoryInterface;
 use QuanticTelecom\InvoicesStorage\Exceptions\GroupOfItemsFactory\GroupOfItemsTypeNotFoundException;
@@ -23,11 +24,21 @@ class GroupOfItemsFactory implements GroupOfItemsFactoryInterface
     protected $itemFactory;
 
     /**
-     * @param ItemFactoryInterface $itemFactory
+     * @var GroupOfItemsArrayValidatorInterface
      */
-    public function __construct(ItemFactoryInterface $itemFactory)
+    protected $groupOfItemsArrayValidator;
+
+    /**
+     * @param ItemFactoryInterface $itemFactory
+     * @param GroupOfItemsArrayValidatorInterface $groupOfItemsArrayValidator
+     */
+    public function __construct(
+        ItemFactoryInterface $itemFactory,
+        GroupOfItemsArrayValidatorInterface $groupOfItemsArrayValidator
+    )
     {
         $this->itemFactory = $itemFactory;
+        $this->groupOfItemsArrayValidator = $groupOfItemsArrayValidator;
     }
 
     /**
@@ -71,7 +82,7 @@ class GroupOfItemsFactory implements GroupOfItemsFactoryInterface
      */
     protected function buildGroupOfItems($data = [])
     {
-        if (!$this->checkData($data)) {
+        if (!$this->groupOfItemsArrayValidator->validate($data)) {
             throw new InvalidDataForGroupsContainerFactoryException;
         }
 
@@ -86,16 +97,5 @@ class GroupOfItemsFactory implements GroupOfItemsFactoryInterface
         }
 
         return $groupOfItems;
-    }
-
-    /**
-     * Check if all necessary data is present
-     *
-     * @param array $data
-     * @return bool
-     */
-    protected function checkData($data = [])
-    {
-
     }
 }

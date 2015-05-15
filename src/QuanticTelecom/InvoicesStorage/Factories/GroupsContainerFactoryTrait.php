@@ -1,8 +1,8 @@
 <?php namespace QuanticTelecom\InvoicesStorage\Factories;
-
 use QuanticTelecom\Invoices\Contracts\GroupsContainerInterface;
 use QuanticTelecom\InvoicesStorage\Contracts\GroupOfItemsFactoryInterface;
 use QuanticTelecom\InvoicesStorage\Exceptions\InvalidDataForGroupsContainerFactoryException;
+
 
 /**
  * Class GroupsContainerFactoryTrait

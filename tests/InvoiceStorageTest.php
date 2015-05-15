@@ -9,11 +9,12 @@ use QuanticTelecom\Invoices\Contracts\InvoiceInterface;
 use QuanticTelecom\Invoices\Contracts\ItemInterface;
 use QuanticTelecom\Invoices\Contracts\PaymentInterface;
 use QuanticTelecom\Invoices\Tests\Helpers\InvoiceStubFactoryTrait;
-use QuanticTelecom\InvoicesStorage\Factories\CustomerFactoryInterface;
-use QuanticTelecom\InvoicesStorage\Factories\GroupOfItemsFactoryInterface;
+use QuanticTelecom\InvoicesStorage\Contracts\CustomerFactoryInterface;
+use QuanticTelecom\InvoicesStorage\Contracts\GroupOfItemsFactoryInterface;
+use QuanticTelecom\InvoicesStorage\Contracts\InvoiceArrayValidatorInterface;
+use QuanticTelecom\InvoicesStorage\Contracts\ItemFactoryInterface;
+use QuanticTelecom\InvoicesStorage\Contracts\PaymentFactoryInterface;
 use QuanticTelecom\InvoicesStorage\Factories\InvoiceFactory;
-use QuanticTelecom\InvoicesStorage\Factories\ItemFactoryInterface;
-use QuanticTelecom\InvoicesStorage\Factories\PaymentFactoryInterface;
 
 abstract class InvoiceStorageTest extends PHPUnit_Framework_TestCase
 {
@@ -38,6 +39,11 @@ abstract class InvoiceStorageTest extends PHPUnit_Framework_TestCase
      * @var PaymentFactoryInterface
      */
     protected $paymentFactory;
+
+    /**
+     * @var InvoiceArrayValidatorInterface
+     */
+    protected $invoiceArrayValidator;
 
     /**
      * @var ItemInterface
@@ -66,6 +72,9 @@ abstract class InvoiceStorageTest extends PHPUnit_Framework_TestCase
 
     public function setUp()
     {
+        $this->invoiceArrayValidator = m::mock(InvoiceArrayValidatorInterface::class);
+        $this->invoiceArrayValidator->shouldReceive("validate")->andReturn(true);
+
         $this->customer = m::mock(CustomerInterface::class);
         $this->customerFactory = m::mock(CustomerFactoryInterface::class);
         $this->customerFactory->shouldReceive('build')->andReturn($this->customer);
@@ -86,7 +95,8 @@ abstract class InvoiceStorageTest extends PHPUnit_Framework_TestCase
             $this->customerFactory,
             $this->paymentFactory,
             $this->itemFactory,
-            $this->groupOfItemsFactory
+            $this->groupOfItemsFactory,
+            $this->invoiceArrayValidator
         );
     }
 
