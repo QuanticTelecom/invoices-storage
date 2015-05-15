@@ -29,8 +29,6 @@ interface InvoiceRepositoryInterface
      * Save an invoice.
      *
      * @param AbstractInvoice $invoice
-     *
-     * @return mixed
      */
     public function save(AbstractInvoice $invoice);
 }

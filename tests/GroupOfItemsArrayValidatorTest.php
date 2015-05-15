@@ -1,9 +1,8 @@
 <?php
 
-namespace QuanticTelecom\InvoicesStorage\Tests;
+namespace QuanticTelecom\InvoicesStorage\tests;
 
 use QuanticTelecom\InvoicesStorage\Validators\GroupOfItemsArrayValidator;
-use QuanticTelecom\InvoicesStorage\Validators\InvoiceArrayValidator;
 
 class GroupOfItemsArrayValidatorTest extends InvoiceStorageTest
 {
