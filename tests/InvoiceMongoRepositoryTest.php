@@ -2,6 +2,7 @@
 
 namespace QuanticTelecom\InvoicesStorage\Tests;
 
+use Carbon\Carbon;
 use MongoClient;
 use Mockery as m;
 use QuanticTelecom\Invoices\Contracts\CustomerInterface;
@@ -78,5 +79,33 @@ class InvoiceMongoRepositoryTest extends InvoiceStorageTest
         $this->assertEquals($invoice->getId(), $invoiceSaved->getId());
         $this->assertEquals($invoice->getCreatedAt(), $invoiceSaved->getCreatedAt());
         $this->assertEquals($invoice->getDueDate(), $invoiceSaved->getDueDate());
+    }
+
+    /**
+     * @test
+     */
+    public function weGetTheLastInvoice()
+    {
+        $invoice1 = $this->getNewInvoice(IncludingTaxInvoice::class, [
+            'id' => '2015-10-0001',
+            'createdAt' => '2015-10-28',
+        ]);
+        $this->repository->save($invoice1);
+
+        $invoice2 = $this->getNewInvoice(IncludingTaxInvoice::class, [
+            'id' => '2015-11-0001',
+            'createdAt' => '2015-11-10',
+        ]);
+        $this->repository->save($invoice2);
+
+        $invoice3 = $this->getNewInvoice(IncludingTaxInvoice::class, [
+            'id' => '2015-11-0002',
+            'createdAt' => '2015-11-12',
+        ]);
+        $this->repository->save($invoice3);
+
+        $lastInvoice = $this->repository->getLastInvoiceForMonth(Carbon::createFromDate('2015', '11', '15'));
+
+        $this->assertEquals('2015-11-0002', $lastInvoice->getId());
     }
 }
