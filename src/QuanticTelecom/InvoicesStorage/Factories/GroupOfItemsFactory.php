@@ -81,7 +81,7 @@ class GroupOfItemsFactory implements GroupOfItemsFactoryInterface
         return [
             'type' => 'groupOfItems',
             'name' => $groupOfItem->getName(),
-            'items' => array_map(function(ItemInterface $item) {
+            'items' => array_map(function (ItemInterface $item) {
                 return $this->itemFactory->toArray($item);
             }, $groupOfItem->getItems())
         ];

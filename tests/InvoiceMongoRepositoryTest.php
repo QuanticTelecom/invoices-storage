@@ -139,7 +139,7 @@ class InvoiceMongoRepositoryTest extends PHPUnit_Framework_TestCase
         $cursor->shouldReceive('current')->andReturn([
             'type' => 'fake',
             'some-other-key' => true
-        ],[
+        ], [
             'type' => 'real',
             'some-other-key' => false
         ]);
