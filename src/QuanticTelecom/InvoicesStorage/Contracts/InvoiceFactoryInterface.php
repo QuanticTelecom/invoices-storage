@@ -25,13 +25,11 @@ interface InvoiceFactoryInterface
     public function build($type, $data = []);
 
     /**
-     * Get the type of invoice.
+     * Transform an invoice into an array of data.
      *
-     * @param InvoiceInterface $class
+     * @param InvoiceInterface $invoice
      *
-     * @return string type of invoice
-     *
-     * @throws UnknownInvoiceClassException
+     * @return array
      */
-    public function inverseResolution(InvoiceInterface $class);
+    public function toArray(InvoiceInterface $invoice);
 }

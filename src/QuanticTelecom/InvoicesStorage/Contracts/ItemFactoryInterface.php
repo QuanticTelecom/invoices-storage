@@ -20,11 +20,11 @@ interface ItemFactoryInterface
     public function build($type, $data = []);
 
     /**
-     * Get the type of item.
+     * Transform an item into an array of data.
      *
-     * @param ItemInterface $class
+     * @param ItemInterface $item
      *
-     * @return string type of item
+     * @return array
      */
-    public function inverseResolution(ItemInterface $class);
+    public function toArray(ItemInterface $item);
 }

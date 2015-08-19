@@ -2,6 +2,7 @@
 
 namespace QuanticTelecom\InvoicesStorage\Factories;
 
+use MongoDate;
 use QuanticTelecom\Invoices\AbstractInvoice;
 use QuanticTelecom\Invoices\ExcludingTaxInvoice;
 use QuanticTelecom\Invoices\IncludingTaxInvoice;
@@ -218,5 +219,42 @@ class InvoiceFactory implements InvoiceFactoryInterface
         } else {
             return false;
         }
+    }
+
+    /**
+     * Transform an invoice into an array of data.
+     *
+     * @param InvoiceInterface $invoice
+     *
+     * @return array
+     */
+    public function toArray(InvoiceInterface $invoice)
+    {
+        $data = [
+            'type' => $this->inverseResolution($invoice),
+            'id' => $invoice->getId(),
+            'customer' => $this->customerFactory->toArray($invoice->getCustomer()),
+            'createdAt' => new MongoDate($invoice->getCreatedAt()->timestamp),
+            'dueDate' => new MongoDate($invoice->getDueDate()->timestamp),
+            'includingTaxTotalPrice' => $invoice->getIncludingTaxTotalPrice(),
+            'excludingTaxTotalPrice' => $invoice->getExcludingTaxTotalPrice(),
+            'vatAmount' => $invoice->getVatAmount(),
+            'items' => [],
+            'groups' => [],
+        ];
+
+        foreach ($invoice->getItems() as $item) {
+            $data['items'][] = $this->itemFactory->toArray($item);
+        }
+
+        foreach ($invoice->getGroups() as $group) {
+            $data['groups'][] = $this->groupOfItemsFactory->toArray($group);
+        }
+
+        if ($invoice->isPaid()) {
+            $data['payment'] = $this->paymentFactory->toArray($invoice->getPayment());
+        }
+
+        return $data;
     }
 }

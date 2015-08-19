@@ -14,9 +14,11 @@ trait GroupsContainerFactoryTrait
     /**
      * Fill the items container with all items.
      *
-     * @param GroupsContainerInterface     $groupsContainer
+     * @param GroupsContainerInterface $groupsContainer
      * @param GroupOfItemsFactoryInterface $groupOfItemsFactory
-     * @param array                        $groupsOfItemsData
+     * @param array $groupsOfItemsData
+     *
+     * @return GroupsContainerInterface
      *
      * @throws InvalidDataForGroupsContainerFactoryException
      */
@@ -34,6 +36,8 @@ trait GroupsContainerFactoryTrait
             $groupOfItems = $groupOfItemsFactory->build($groupOfItemsData['type'], $groupOfItemsData);
             $groupsContainer->addGroup($groupOfItems);
         }
+
+        return $groupsContainer;
     }
 
     /**

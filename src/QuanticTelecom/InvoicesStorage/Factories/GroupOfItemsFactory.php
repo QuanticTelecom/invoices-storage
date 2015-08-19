@@ -3,6 +3,7 @@
 namespace QuanticTelecom\InvoicesStorage\Factories;
 
 use QuanticTelecom\Invoices\Contracts\GroupOfItemsInterface;
+use QuanticTelecom\Invoices\Contracts\ItemInterface;
 use QuanticTelecom\Invoices\GroupOfItems;
 use QuanticTelecom\InvoicesStorage\Contracts\GroupOfItemsArrayValidatorInterface;
 use QuanticTelecom\InvoicesStorage\Contracts\GroupOfItemsFactoryInterface;
@@ -51,40 +52,6 @@ class GroupOfItemsFactory implements GroupOfItemsFactoryInterface
      */
     public function build($type, $data = [])
     {
-        switch ($type) {
-            case 'groupOfItems':
-                return $this->buildGroupOfItems($data);
-                break;
-            default:
-                throw new GroupOfItemsTypeNotFoundException();
-        }
-    }
-
-    /**
-     * Get the type of the group of items.
-     *
-     * @param GroupOfItemsInterface $class
-     *
-     * @return string type of group of items
-     */
-    public function inverseResolution(GroupOfItemsInterface $class)
-    {
-        if ($class instanceof GroupOfItems) {
-            return 'groupOfItems';
-        } else {
-            throw new UnknownGroupOfItemsClassException();
-        }
-    }
-
-    /**
-     * Build a new GroupOfItems implementation instance.
-     *
-     * @param array $data
-     *
-     * @return GroupOfItems
-     */
-    protected function buildGroupOfItems($data = [])
-    {
         if (!$this->groupOfItemsArrayValidator->validate($data)) {
             throw new InvalidDataForGroupsContainerFactoryException();
         }
@@ -92,13 +59,31 @@ class GroupOfItemsFactory implements GroupOfItemsFactoryInterface
         $groupOfItems = new GroupOfItems($data['name']);
 
         if (isset($data['items']) and is_array($data['items'])) {
-            $this->fillItems($groupOfItems, $this->itemFactory, $data['items']);
+            $groupOfItems = $this->fillItems($groupOfItems, $this->itemFactory, $data['items']);
         }
 
         if (isset($data['groups']) and is_array($data['groups'])) {
-            $this->fillGroups($groupOfItems, $this, $data['groups']);
+            $groupOfItems = $this->fillGroups($groupOfItems, $this, $data['groups']);
         }
 
         return $groupOfItems;
+    }
+
+    /**
+     * Transform a group of items into an array of data.
+     *
+     * @param GroupOfItemsInterface $groupOfItem
+     *
+     * @return array
+     */
+    public function toArray(GroupOfItemsInterface $groupOfItem)
+    {
+        return [
+            'type' => 'groupOfItems',
+            'name' => $groupOfItem->getName(),
+            'items' => array_map(function(ItemInterface $item) {
+                return $this->itemFactory->toArray($item);
+            }, $groupOfItem->getItems())
+        ];
     }
 }

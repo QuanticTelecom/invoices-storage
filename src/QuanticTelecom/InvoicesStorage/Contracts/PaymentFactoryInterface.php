@@ -20,11 +20,11 @@ interface PaymentFactoryInterface
     public function build($type, $data = []);
 
     /**
-     * Get the type of payment.
+     * Transform a payment into an array of data.
      *
-     * @param PaymentInterface $class
+     * @param PaymentInterface $payment
      *
-     * @return string type of payment
+     * @return array
      */
-    public function inverseResolution(PaymentInterface $class);
+    public function toArray(PaymentInterface $payment);
 }

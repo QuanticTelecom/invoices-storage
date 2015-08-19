@@ -20,11 +20,11 @@ interface GroupOfItemsFactoryInterface
     public function build($type, $data = []);
 
     /**
-     * Get the type of the group of items.
+     * Transform a group of items into an array of data.
      *
-     * @param GroupOfItemsInterface $class
+     * @param GroupOfItemsInterface $groupOfItem
      *
-     * @return string type of group of items
+     * @return array
      */
-    public function inverseResolution(GroupOfItemsInterface $class);
+    public function toArray(GroupOfItemsInterface $groupOfItem);
 }

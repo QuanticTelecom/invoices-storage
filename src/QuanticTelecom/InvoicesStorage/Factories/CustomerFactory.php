@@ -27,14 +27,19 @@ class CustomerFactory implements CustomerFactoryInterface
     }
 
     /**
-     * Get the type of customer.
+     * Transform a customer into an array of data.
      *
-     * @param CustomerInterface $class
+     * @param CustomerInterface $customer
      *
-     * @return string type of customer
+     * @return array
      */
-    public function inverseResolution(CustomerInterface $class)
+    public function toArray(CustomerInterface $customer)
     {
-        return 'customer';
+        return [
+            'type' => 'customer',
+            'id' => $customer->getCustomerId(),
+            'name' => $customer->getCustomerName(),
+            'address' => $customer->getCustomerAddress(),
+        ];
     }
 }

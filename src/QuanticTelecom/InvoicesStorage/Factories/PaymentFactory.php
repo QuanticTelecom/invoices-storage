@@ -1,5 +1,6 @@
 <?php namespace QuanticTelecom\InvoicesStorage\Factories;
 
+use MongoDate;
 use QuanticTelecom\Invoices\Contracts\PaymentInterface;
 use QuanticTelecom\Invoices\Payment;
 use QuanticTelecom\InvoicesStorage\Contracts\PaymentFactoryInterface;
@@ -24,14 +25,18 @@ class PaymentFactory implements PaymentFactoryInterface
     }
 
     /**
-     * Get the type of payment.
+     * Transform a payment into an array of data.
      *
-     * @param PaymentInterface $class
+     * @param PaymentInterface $payment
      *
-     * @return string type of payment
+     * @return array
      */
-    public function inverseResolution(PaymentInterface $class)
+    public function toArray(PaymentInterface $payment)
     {
-        return 'payment';
+        return [
+            'type' => 'payment',
+            'name' => $payment->getPaymentName(),
+            'date' => new MongoDate($payment->getPaymentDate()->timestamp),
+        ];
     }
 }

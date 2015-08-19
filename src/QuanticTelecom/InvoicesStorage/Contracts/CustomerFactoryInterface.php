@@ -20,11 +20,11 @@ interface CustomerFactoryInterface
     public function build($type, $data = []);
 
     /**
-     * Get the type of customer.
+     * Transform a customer into an array of data.
      *
-     * @param CustomerInterface $class
+     * @param CustomerInterface $customer
      *
-     * @return string type of customer
+     * @return array
      */
-    public function inverseResolution(CustomerInterface $class);
+    public function toArray(CustomerInterface $customer);
 }

@@ -15,8 +15,10 @@ trait ItemsContainerFactoryTrait
      * Fill the items container with all items.
      *
      * @param ItemsContainerInterface $itemsContainer
-     * @param ItemFactoryInterface    $itemFactory
-     * @param array                   $itemsData
+     * @param ItemFactoryInterface $itemFactory
+     * @param array $itemsData
+     *
+     * @return ItemsContainerInterface
      *
      * @throws InvalidDataForItemsContainerFactoryException
      */
@@ -34,6 +36,8 @@ trait ItemsContainerFactoryTrait
             $item = $itemFactory->build($itemData['type'], $itemData);
             $itemsContainer->addItem($item);
         }
+
+        return $itemsContainer;
     }
 
     /**

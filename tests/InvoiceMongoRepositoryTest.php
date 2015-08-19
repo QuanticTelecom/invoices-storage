@@ -3,83 +3,150 @@
 namespace QuanticTelecom\InvoicesStorage\Tests;
 
 use Carbon\Carbon;
+use Mockery\MockInterface;
 use MongoClient;
 use Mockery as m;
+use MongoCollection;
+use MongoCursor;
+use PHPUnit_Framework_TestCase;
 use QuanticTelecom\Invoices\AbstractInvoice;
 use QuanticTelecom\Invoices\Contracts\CustomerInterface;
 use QuanticTelecom\Invoices\Contracts\PaymentInterface;
 use QuanticTelecom\Invoices\IncludingTaxInvoice;
 use QuanticTelecom\InvoicesStorage\Contracts\CustomerFactoryInterface;
 use QuanticTelecom\InvoicesStorage\Contracts\GroupOfItemsArrayValidatorInterface;
+use QuanticTelecom\InvoicesStorage\Contracts\GroupOfItemsFactoryInterface;
 use QuanticTelecom\InvoicesStorage\Contracts\InvoiceArrayValidatorInterface;
+use QuanticTelecom\InvoicesStorage\Contracts\InvoiceFactoryInterface;
+use QuanticTelecom\InvoicesStorage\Contracts\ItemFactoryInterface;
 use QuanticTelecom\InvoicesStorage\Contracts\PaymentFactoryInterface;
 use QuanticTelecom\InvoicesStorage\Factories\GroupOfItemsFactory;
 use QuanticTelecom\InvoicesStorage\Factories\InvoiceFactory;
 use QuanticTelecom\InvoicesStorage\Factories\ItemFactory;
 use QuanticTelecom\InvoicesStorage\Repositories\InvoiceMongoRepository;
 
-class InvoiceMongoRepositoryTest extends InvoiceStorageTest
+class InvoiceMongoRepositoryTest extends PHPUnit_Framework_TestCase
 {
     /**
      * @var InvoiceMongoRepository
      */
     protected $repository;
 
+    /**
+     * @var MockInterface
+     */
+    private $collection;
+
+    /**
+     * @var MockInterface
+     */
+    private $invoiceFactory;
+
     public function setUp()
     {
         parent::setUp();
-        $mongoClient = new MongoClient();
-        $mongoClient->test->drop();
 
-        $invoiceArrayValidator = m::mock(InvoiceArrayValidatorInterface::class);
-        $invoiceArrayValidator->shouldReceive('validate')->andReturn(true);
-
-        $groupOfItemsArrayValidator = m::mock(GroupOfItemsArrayValidatorInterface::class);
-        $groupOfItemsArrayValidator->shouldReceive('validate')->andReturn(true);
-
-        $customerFactory = m::mock(CustomerFactoryInterface::class);
-        $customerFactory->shouldReceive('inverseResolution')->andReturn('customer');
-        $customerFactory->shouldReceive('build')->andReturn(m::mock(CustomerInterface::class));
-
-        $paymentFactory = m::mock(PaymentFactoryInterface::class);
-        $paymentFactory->shouldReceive('inverseResolution')->andReturn('payment');
-        $paymentFactory->shouldReceive('build')->andReturn(m::mock(PaymentInterface::class));
-
-        $itemFactory = new ItemFactory();
-
-        $groupOfItemsFactory = new GroupOfItemsFactory($itemFactory, $groupOfItemsArrayValidator);
-
-        $invoiceFactory = new InvoiceFactory(
-            $customerFactory,
-            $paymentFactory,
-            $itemFactory,
-            $groupOfItemsFactory,
-            $invoiceArrayValidator
-        );
+        $this->collection = m::mock(MongoCollection::class);
+        $this->invoiceFactory = m::mock(InvoiceFactoryInterface::class);
 
         $this->repository = new InvoiceMongoRepository(
-            $mongoClient->test,
-            $invoiceFactory,
-            $customerFactory,
-            $paymentFactory,
-            $itemFactory,
-            $groupOfItemsFactory
+            $this->collection,
+            $this->invoiceFactory
         );
     }
 
     /**
      * @test
      */
-    public function weSaveAnInvoice()
+    public function itGetsAnInvoiceById()
     {
-        $invoice = $this->getNewInvoice(IncludingTaxInvoice::class);
-        $this->repository->save($invoice);
+        $id = 'random-id';
+        $type = 'fake';
+        $data = [
+            'type' => $type,
+            'some-other-key' => true
+        ];
+        $this->collection
+            ->shouldReceive('findOne')
+            ->with(['id' => $id])
+            ->andReturn($data)
+            ->once();
 
-        $invoiceSaved = $this->repository->get($invoice->getId());
+        $this->invoiceFactory
+            ->shouldReceive('build')
+            ->with($type, $data)
+            ->once();
 
-        $this->assertEquals($invoice->getId(), $invoiceSaved->getId());
-        $this->assertEquals($invoice->getCreatedAt(), $invoiceSaved->getCreatedAt());
-        $this->assertEquals($invoice->getDueDate(), $invoiceSaved->getDueDate());
+        $this->repository->get($id);
+    }
+
+    /**
+     * @test
+     */
+    public function itGetsAllInvoices()
+    {
+        $invoices = $this->getNewMongoCursor();
+        $this->collection
+            ->shouldReceive('find')
+            ->withNoArgs()
+            ->andReturn($invoices)
+            ->once();
+
+        $this->invoiceFactory
+            ->shouldReceive('build')
+            ->twice();
+
+        $this->repository->getAll();
+    }
+
+    /**
+     * @test
+     */
+    public function itGetsTheInvoicesForACustomer()
+    {
+        $customerId = 'sauron';
+        $customer = m::mock(CustomerInterface::class);
+        $customer->shouldReceive('getCustomerId')
+            ->once()
+            ->andReturn($customerId);
+
+        $invoices = $this->getNewMongoCursor();
+        $this->collection
+            ->shouldReceive('find')
+            ->once()
+            ->with([
+                'customer.id' => $customerId
+            ])
+            ->andReturn($invoices);
+
+        $this->invoiceFactory
+            ->shouldReceive('build')
+            ->twice();
+
+        $this->repository->getAllByCustomer($customer);
+    }
+
+    /**
+     * Get a new MongoCursor with two elements.
+     *
+     * @return MockInterface
+     */
+    private function getNewMongoCursor()
+    {
+        $cursor = m::mock(MongoCursor::class);
+        $cursor->shouldReceive('rewind');
+        $cursor->shouldReceive('valid')->andReturn(true, true, false);
+        $cursor->shouldReceive('current')->andReturn([
+            'type' => 'fake',
+            'some-other-key' => true
+        ],[
+            'type' => 'real',
+            'some-other-key' => false
+        ]);
+        $cursor->shouldReceive('key')->andReturn('first-key', 'second-key');
+        $cursor->shouldReceive('next');
+
+        return $cursor;
     }
 
     /**
@@ -87,12 +154,7 @@ class InvoiceMongoRepositoryTest extends InvoiceStorageTest
      */
     public function weGetTheLastInvoice()
     {
-        list($invoice1, $invoice2, $invoice3) = $this->saveThreeInvoices();
-
-        $lastInvoice = $this->repository->getLastInvoiceForMonth(Carbon::createFromDate('2015', '11', '15'));
-
-        $this->assertInstanceOf(AbstractInvoice::class, $lastInvoice);
-        $this->assertEquals('2015-11-0002', $lastInvoice->getId());
+        // TODO: check the last invoice method.
     }
 
     /**
@@ -100,34 +162,6 @@ class InvoiceMongoRepositoryTest extends InvoiceStorageTest
      */
     public function weGetNullWhenThereIsNoInvoice()
     {
-        list($invoice1, $invoice2, $invoice3) = $this->saveThreeInvoices();
-
-        $dateWithNoInvoice = Carbon::createFromDate('2015', '12', '15');
-        $lastInvoice = $this->repository->getLastInvoiceForMonth($dateWithNoInvoice);
-
-        $this->assertEquals(null, $lastInvoice);
-    }
-
-    protected function saveThreeInvoices()
-    {
-        $invoice1 = $this->getNewInvoice(IncludingTaxInvoice::class, [
-            'id' => '2015-10-0001',
-            'createdAt' => '2015-10-28',
-        ]);
-        $this->repository->save($invoice1);
-
-        $invoice2 = $this->getNewInvoice(IncludingTaxInvoice::class, [
-            'id' => '2015-11-0001',
-            'createdAt' => '2015-11-10',
-        ]);
-        $this->repository->save($invoice2);
-
-        $invoice3 = $this->getNewInvoice(IncludingTaxInvoice::class, [
-            'id' => '2015-11-0002',
-            'createdAt' => '2015-11-12',
-        ]);
-        $this->repository->save($invoice3);
-
-        return [$invoice1, $invoice2, $invoice3];
+        // TODO: check the last invoice method.
     }
 }

@@ -23,64 +23,25 @@ use QuanticTelecom\InvoicesStorage\Contracts\PaymentFactoryInterface;
 class InvoiceMongoRepository implements InvoiceRepositoryInterface, LastInvoiceRepositoryInterface
 {
     /**
-     * Collection name of the invoices.
-     *
-     * @var string
-     */
-    protected $collection = 'invoices';
-
-    /**
      * @var InvoiceFactoryInterface
      */
     private $invoiceFactory;
 
     /**
-     * @var MongoDB
+     * @var MongoCollection
      */
-    private $database;
+    private $collection;
 
     /**
-     * @var CustomerFactoryInterface
-     */
-    private $customerFactory;
-
-    /**
-     * @var PaymentFactoryInterface
-     */
-    private $paymentFactory;
-
-    /**
-     * @var ItemFactoryInterface
-     */
-    private $itemFactory;
-
-    /**
-     * @var GroupOfItemsFactoryInterface
-     */
-    private $groupOfItemsFactory;
-
-    /**
-     * @param MongoDB                      $database
+     * @param MongoCollection              $collection
      * @param InvoiceFactoryInterface      $invoiceFactory
-     * @param CustomerFactoryInterface     $customerFactory
-     * @param PaymentFactoryInterface      $paymentFactory
-     * @param ItemFactoryInterface         $itemFactory
-     * @param GroupOfItemsFactoryInterface $groupOfItemsFactory
      */
     public function __construct(
-        MongoDB $database,
-        InvoiceFactoryInterface $invoiceFactory,
-        CustomerFactoryInterface $customerFactory,
-        PaymentFactoryInterface $paymentFactory,
-        ItemFactoryInterface $itemFactory,
-        GroupOfItemsFactoryInterface $groupOfItemsFactory
+        MongoCollection $collection,
+        InvoiceFactoryInterface $invoiceFactory
     ) {
-        $this->database = $database;
+        $this->collection = $collection;
         $this->invoiceFactory = $invoiceFactory;
-        $this->customerFactory = $customerFactory;
-        $this->paymentFactory = $paymentFactory;
-        $this->itemFactory = $itemFactory;
-        $this->groupOfItemsFactory = $groupOfItemsFactory;
     }
 
     /**
@@ -92,7 +53,7 @@ class InvoiceMongoRepository implements InvoiceRepositoryInterface, LastInvoiceR
      */
     public function get($id)
     {
-        $data = $this->getCollection()->findOne([
+        $data = $this->collection->findOne([
             'id' => $id,
         ]);
         $data = $this->transformDates($data);
@@ -107,7 +68,7 @@ class InvoiceMongoRepository implements InvoiceRepositoryInterface, LastInvoiceR
      */
     public function getAll()
     {
-        $cursor = $this->getCollection()->find();
+        $cursor = $this->collection->find();
 
         return $this->cursorToInvoiceArray($cursor);
     }
@@ -119,68 +80,9 @@ class InvoiceMongoRepository implements InvoiceRepositoryInterface, LastInvoiceR
      */
     public function save(AbstractInvoice $invoice)
     {
-        $document = [
-            'type' => $this->invoiceFactory->inverseResolution($invoice),
-            'id' => $invoice->getId(),
-            'customer' => [
-                'type' => $this->customerFactory->inverseResolution($invoice->getCustomer()),
-                'id' => $invoice->getCustomer()->getCustomerId(),
-                'name' => $invoice->getCustomer()->getCustomerName(),
-                'address' => $invoice->getCustomer()->getCustomerAddress(),
-            ],
-            'createdAt' => new MongoDate($invoice->getCreatedAt()->timestamp),
-            'dueDate' => new MongoDate($invoice->getDueDate()->timestamp),
-            'includingTaxTotalPrice' => $invoice->getIncludingTaxTotalPrice(),
-            'excludingTaxTotalPrice' => $invoice->getExcludingTaxTotalPrice(),
-            'vatAmount' => $invoice->getVatAmount(),
-        ];
+        $document = $this->invoiceFactory->toArray($invoice);
 
-        $items = [];
-        foreach ($invoice->getItems() as $item) {
-            $items[] = [
-                'type' => $this->itemFactory->inverseResolution($item),
-                'name' => $item->getItemName(),
-                'quantity' => $item->getItemQuantity(),
-                'includingTaxUnitPrice' => $item->getItemIncludingTaxUnitPrice(),
-                'includingTaxTotalPrice' => $item->getItemIncludingTaxTotalPrice(),
-                'excludingTaxUnitPrice' => $item->getItemExcludingTaxUnitPrice(),
-                'excludingTaxTotalPrice' => $item->getItemExcludingTaxTotalPrice(),
-            ];
-        }
-        $document['items'] = $items;
-
-        $groups = [];
-        foreach ($invoice->getGroups() as $group) {
-            $items = [];
-            foreach ($group->getItems() as $item) {
-                $items[] = [
-                    'type' => $this->itemFactory->inverseResolution($item),
-                    'name' => $item->getItemName(),
-                    'quantity' => $item->getItemQuantity(),
-                    'includingTaxUnitPrice' => $item->getItemIncludingTaxUnitPrice(),
-                    'includingTaxTotalPrice' => $item->getItemIncludingTaxTotalPrice(),
-                    'excludingTaxUnitPrice' => $item->getItemExcludingTaxUnitPrice(),
-                    'excludingTaxTotalPrice' => $item->getItemExcludingTaxTotalPrice(),
-                ];
-            }
-
-            $groups[] = [
-                'type' => $this->groupOfItemsFactory->inverseResolution($group),
-                'name' => $group->getName(),
-                'items' => $items,
-            ];
-        }
-        $document['groups'] = $groups;
-
-        if ($invoice->isPaid()) {
-            $document['payment'] = [
-                'type' => $this->paymentFactory->inverseResolution($invoice->getPayment()),
-                'name' => $invoice->getPayment()->getPaymentName(),
-                'date' => new MongoDate($invoice->getPayment()->getPaymentDate()->timestamp),
-            ];
-        }
-
-        $this->getCollection()->insert($document);
+        $this->collection->insert($document);
     }
 
     /**
@@ -192,7 +94,7 @@ class InvoiceMongoRepository implements InvoiceRepositoryInterface, LastInvoiceR
      */
     public function getAllByCustomer(CustomerInterface $customer)
     {
-        $cursor = $this->getCollection()->find([
+        $cursor = $this->collection->find([
             'customer.id' => $customer->getCustomerId(),
         ]);
 
@@ -208,7 +110,7 @@ class InvoiceMongoRepository implements InvoiceRepositoryInterface, LastInvoiceR
      */
     public function getLastInvoiceForMonth(Carbon $date)
     {
-        $invoiceData = $this->getCollection()->aggregate([
+        $invoiceData = $this->collection->aggregate([
             '$project' => [
                 'year' => ['$year' => '$createdAt'],
                 'month' => ['$month' => '$createdAt'],
@@ -258,14 +160,6 @@ class InvoiceMongoRepository implements InvoiceRepositoryInterface, LastInvoiceR
         }
 
         return $invoices;
-    }
-
-    /**
-     * @return MongoCollection
-     */
-    protected function getCollection()
-    {
-        return $this->database->{$this->collection};
     }
 
     /**
