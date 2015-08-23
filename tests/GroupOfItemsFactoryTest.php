@@ -43,6 +43,7 @@ class GroupOfItemsFactoryTest extends InvoiceStorageTest
         $this->groupOfItems = new GroupOfItems(
             $this->groupOfItemsArray['name']
         );
+        $this->groupOfItemsArray['groups'] = [];
 
         $itemFactory = new ItemFactory();
         $this->groupOfItems->addItem(
