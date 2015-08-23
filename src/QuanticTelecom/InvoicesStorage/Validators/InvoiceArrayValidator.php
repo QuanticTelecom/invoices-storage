@@ -17,6 +17,8 @@ class InvoiceArrayValidator implements InvoiceArrayValidatorInterface
     {
         return  array_key_exists('id', $data)
             and array_key_exists('customer', $data)
+            and array_key_exists('createdAt', $data)
+            and array_key_exists('dueDate', $data)
             and is_array($data['customer'])
             and array_key_exists('type', $data['customer']);
     }

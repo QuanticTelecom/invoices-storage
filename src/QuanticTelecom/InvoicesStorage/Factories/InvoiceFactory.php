@@ -135,7 +135,7 @@ class InvoiceFactory implements InvoiceFactoryInterface
         $idGenerator = new IdGenerator($data['id']);
         $customer = $this->customerFactory->build($data['customer']['type'], $data['customer']);
 
-        $invoice = new $class($idGenerator, $customer);
+        $invoice = new $class($idGenerator, $customer, $data['dueDate'], $data['createdAt']);
         $this->fillInvoice($invoice, $data);
 
         return $invoice;
@@ -177,14 +177,6 @@ class InvoiceFactory implements InvoiceFactoryInterface
      */
     protected function fillInvoice(InvoiceInterface $invoice, $data = [])
     {
-        if (isset($data['createdAt'])) {
-            $invoice->setCreatedAt($data['createdAt']);
-        }
-
-        if (isset($data['dueDate'])) {
-            $invoice->setDueDate($data['dueDate']);
-        }
-
         if ($this->checkPayment($data)) {
             $payment = $this->paymentFactory->build($data['payment']['type'], $data['payment']);
             $invoice->setPayment($payment);

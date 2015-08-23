@@ -2,6 +2,7 @@
 
 namespace QuanticTelecom\InvoicesStorage\Tests;
 
+use MongoDate;
 use QuanticTelecom\InvoicesStorage\Validators\InvoiceArrayValidator;
 
 class InvoiceArrayValidatorTest extends InvoiceStorageTest
@@ -24,6 +25,8 @@ class InvoiceArrayValidatorTest extends InvoiceStorageTest
 
         $this->arrayToValidate = [
             'id' => '42',
+            'createdAt' => new MongoDate(42),
+            'dueDate' => new MongoDate(1337),
             'customer' => [
                 'type' => 'student',
             ],
@@ -88,6 +91,32 @@ class InvoiceArrayValidatorTest extends InvoiceStorageTest
     {
         $data = $this->arrayToValidate;
         unset($data['customer']['type']);
+
+        $this->assertFalse(
+            $this->invoiceArrayValidator->validate($data)
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function itFailsIfThereIsNoCreatedAt()
+    {
+        $data = $this->arrayToValidate;
+        unset($data['createdAt']);
+
+        $this->assertFalse(
+            $this->invoiceArrayValidator->validate($data)
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function itFailsIfThereIsNoDueDate()
+    {
+        $data = $this->arrayToValidate;
+        unset($data['dueDate']);
 
         $this->assertFalse(
             $this->invoiceArrayValidator->validate($data)
