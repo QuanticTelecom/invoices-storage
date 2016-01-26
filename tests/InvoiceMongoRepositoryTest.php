@@ -121,23 +121,10 @@ class InvoiceMongoRepositoryTest extends PHPUnit_Framework_TestCase
     /**
      * Get a new Cursor with two elements.
      *
-     * @return MockInterface
+     * @return ArrayIterator
      */
     private function getNewCursor()
     {
-//        $cursor = m::mock(Cursor::class);
-//        $cursor->shouldReceive('rewind');
-//        $cursor->shouldReceive('valid')->andReturn(true, true, false);
-//        $cursor->shouldReceive('current')->andReturn([
-//            'type' => 'fake',
-//            'some-other-key' => true
-//        ], [
-//            'type' => 'real',
-//            'some-other-key' => false
-//        ]);
-//        $cursor->shouldReceive('key')->andReturn('first-key', 'second-key');
-//        $cursor->shouldReceive('next');
-
         return new ArrayIterator([[
             'type' => 'fake',
             'some-other-key' => true
