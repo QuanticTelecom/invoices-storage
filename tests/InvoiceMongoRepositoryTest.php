@@ -6,7 +6,6 @@ use ArrayIterator;
 use Mockery\MockInterface;
 use Mockery as m;
 use MongoDB\Collection;
-use MongoDB\Driver\Cursor;
 use PHPUnit_Framework_TestCase;
 use QuanticTelecom\Invoices\Contracts\CustomerInterface;
 use QuanticTelecom\InvoicesStorage\Contracts\InvoiceFactoryInterface;

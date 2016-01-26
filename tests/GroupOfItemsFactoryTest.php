@@ -2,11 +2,8 @@
 
 namespace QuanticTelecom\InvoicesStorage\Tests;
 
-use QuanticTelecom\Invoices\Contracts\ItemInterface;
 use QuanticTelecom\Invoices\GroupOfItems;
-use QuanticTelecom\Invoices\Item;
 use QuanticTelecom\InvoicesStorage\Contracts\GroupOfItemsFactoryInterface;
-use QuanticTelecom\InvoicesStorage\Contracts\ItemFactoryInterface;
 use QuanticTelecom\InvoicesStorage\Factories\GroupOfItemsFactory;
 use QuanticTelecom\InvoicesStorage\Factories\ItemFactory;
 use QuanticTelecom\InvoicesStorage\Validators\GroupOfItemsArrayValidator;
