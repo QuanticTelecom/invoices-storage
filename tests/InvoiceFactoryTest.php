@@ -9,6 +9,12 @@ use QuanticTelecom\Invoices\IncludingTaxInvoice;
 
 class InvoiceFactoryTest extends InvoiceStorageTest
 {
+
+    public function tearDown()
+    {
+        m::close();
+    }
+
     /**
      * @test
      */

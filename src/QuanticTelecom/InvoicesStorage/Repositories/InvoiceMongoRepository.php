@@ -3,19 +3,14 @@
 namespace QuanticTelecom\InvoicesStorage\Repositories;
 
 use Carbon\Carbon;
-use MongoCollection;
-use MongoCursor;
-use MongoDate;
-use MongoDB;
+use MongoDB\BSON\UTCDatetime;
+use MongoDB\Collection;
 use QuanticTelecom\Invoices\AbstractInvoice;
 use QuanticTelecom\Invoices\Contracts\CustomerInterface;
-use QuanticTelecom\InvoicesStorage\Contracts\CustomerFactoryInterface;
-use QuanticTelecom\InvoicesStorage\Contracts\GroupOfItemsFactoryInterface;
 use QuanticTelecom\InvoicesStorage\Contracts\InvoiceFactoryInterface;
 use QuanticTelecom\InvoicesStorage\Contracts\InvoiceRepositoryInterface;
-use QuanticTelecom\InvoicesStorage\Contracts\ItemFactoryInterface;
 use QuanticTelecom\InvoicesStorage\Contracts\LastInvoiceRepositoryInterface;
-use QuanticTelecom\InvoicesStorage\Contracts\PaymentFactoryInterface;
+use Traversable;
 
 /**
  * Class InvoiceMongoRepository.
@@ -28,16 +23,16 @@ class InvoiceMongoRepository implements InvoiceRepositoryInterface, LastInvoiceR
     private $invoiceFactory;
 
     /**
-     * @var MongoCollection
+     * @var Collection
      */
     private $collection;
 
     /**
-     * @param MongoCollection              $collection
+     * @param Collection              $collection
      * @param InvoiceFactoryInterface      $invoiceFactory
      */
     public function __construct(
-        MongoCollection $collection,
+        Collection $collection,
         InvoiceFactoryInterface $invoiceFactory
     ) {
         $this->collection = $collection;
@@ -82,7 +77,7 @@ class InvoiceMongoRepository implements InvoiceRepositoryInterface, LastInvoiceR
     {
         $document = $this->invoiceFactory->toArray($invoice);
 
-        $this->collection->insert($document);
+        $this->collection->insertOne($document);
     }
 
     /**
@@ -128,9 +123,7 @@ class InvoiceMongoRepository implements InvoiceRepositoryInterface, LastInvoiceR
                 'year' => $date->year,
                 'month' => $date->month,
             ],
-        ], [
             '$sort' => ['createdAt' => -1],
-        ], [
             '$limit' => 1,
         ]);
 
@@ -146,11 +139,11 @@ class InvoiceMongoRepository implements InvoiceRepositoryInterface, LastInvoiceR
     /**
      * Transform a MongoCursor into an array of AbstractInvoice.
      *
-     * @param MongoCursor $cursor
+     * @param Traversable $cursor
      *
      * @return AbstractInvoice[]
      */
-    protected function cursorToInvoiceArray(MongoCursor $cursor)
+    protected function cursorToInvoiceArray(Traversable $cursor)
     {
         $invoices = [];
 
@@ -172,7 +165,7 @@ class InvoiceMongoRepository implements InvoiceRepositoryInterface, LastInvoiceR
     protected function transformDates($data)
     {
         foreach ($data as $key => $value) {
-            if ($value instanceof MongoDate) {
+            if ($value instanceof UTCDatetime) {
                 $data[$key] = Carbon::createFromTimeStamp($value->sec);
             }
             if (is_array($value)) {

@@ -2,27 +2,14 @@
 
 namespace QuanticTelecom\InvoicesStorage\Tests;
 
-use Carbon\Carbon;
+use ArrayIterator;
 use Mockery\MockInterface;
-use MongoClient;
 use Mockery as m;
-use MongoCollection;
-use MongoCursor;
+use MongoDB\Collection;
+use MongoDB\Driver\Cursor;
 use PHPUnit_Framework_TestCase;
-use QuanticTelecom\Invoices\AbstractInvoice;
 use QuanticTelecom\Invoices\Contracts\CustomerInterface;
-use QuanticTelecom\Invoices\Contracts\PaymentInterface;
-use QuanticTelecom\Invoices\IncludingTaxInvoice;
-use QuanticTelecom\InvoicesStorage\Contracts\CustomerFactoryInterface;
-use QuanticTelecom\InvoicesStorage\Contracts\GroupOfItemsArrayValidatorInterface;
-use QuanticTelecom\InvoicesStorage\Contracts\GroupOfItemsFactoryInterface;
-use QuanticTelecom\InvoicesStorage\Contracts\InvoiceArrayValidatorInterface;
 use QuanticTelecom\InvoicesStorage\Contracts\InvoiceFactoryInterface;
-use QuanticTelecom\InvoicesStorage\Contracts\ItemFactoryInterface;
-use QuanticTelecom\InvoicesStorage\Contracts\PaymentFactoryInterface;
-use QuanticTelecom\InvoicesStorage\Factories\GroupOfItemsFactory;
-use QuanticTelecom\InvoicesStorage\Factories\InvoiceFactory;
-use QuanticTelecom\InvoicesStorage\Factories\ItemFactory;
 use QuanticTelecom\InvoicesStorage\Repositories\InvoiceMongoRepository;
 
 class InvoiceMongoRepositoryTest extends PHPUnit_Framework_TestCase
@@ -46,13 +33,18 @@ class InvoiceMongoRepositoryTest extends PHPUnit_Framework_TestCase
     {
         parent::setUp();
 
-        $this->collection = m::mock(MongoCollection::class);
+        $this->collection = m::mock(Collection::class);
         $this->invoiceFactory = m::mock(InvoiceFactoryInterface::class);
 
         $this->repository = new InvoiceMongoRepository(
             $this->collection,
             $this->invoiceFactory
         );
+    }
+
+    public function tearDown()
+    {
+        m::close();
     }
 
     /**
@@ -85,7 +77,7 @@ class InvoiceMongoRepositoryTest extends PHPUnit_Framework_TestCase
      */
     public function itGetsAllInvoices()
     {
-        $invoices = $this->getNewMongoCursor();
+        $invoices = $this->getNewCursor();
         $this->collection
             ->shouldReceive('find')
             ->withNoArgs()
@@ -110,7 +102,7 @@ class InvoiceMongoRepositoryTest extends PHPUnit_Framework_TestCase
             ->once()
             ->andReturn($customerId);
 
-        $invoices = $this->getNewMongoCursor();
+        $invoices = $this->getNewCursor();
         $this->collection
             ->shouldReceive('find')
             ->once()
@@ -127,26 +119,32 @@ class InvoiceMongoRepositoryTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * Get a new MongoCursor with two elements.
+     * Get a new Cursor with two elements.
      *
      * @return MockInterface
      */
-    private function getNewMongoCursor()
+    private function getNewCursor()
     {
-        $cursor = m::mock(MongoCursor::class);
-        $cursor->shouldReceive('rewind');
-        $cursor->shouldReceive('valid')->andReturn(true, true, false);
-        $cursor->shouldReceive('current')->andReturn([
+//        $cursor = m::mock(Cursor::class);
+//        $cursor->shouldReceive('rewind');
+//        $cursor->shouldReceive('valid')->andReturn(true, true, false);
+//        $cursor->shouldReceive('current')->andReturn([
+//            'type' => 'fake',
+//            'some-other-key' => true
+//        ], [
+//            'type' => 'real',
+//            'some-other-key' => false
+//        ]);
+//        $cursor->shouldReceive('key')->andReturn('first-key', 'second-key');
+//        $cursor->shouldReceive('next');
+
+        return new ArrayIterator([[
             'type' => 'fake',
             'some-other-key' => true
         ], [
             'type' => 'real',
             'some-other-key' => false
-        ]);
-        $cursor->shouldReceive('key')->andReturn('first-key', 'second-key');
-        $cursor->shouldReceive('next');
-
-        return $cursor;
+        ]]);
     }
 
     /**
