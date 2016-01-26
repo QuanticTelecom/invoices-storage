@@ -1,6 +1,6 @@
 <?php namespace QuanticTelecom\InvoicesStorage\Factories;
 
-use MongoDate;
+use MongoDB\BSON\UTCDatetime;
 use QuanticTelecom\Invoices\Contracts\PaymentInterface;
 use QuanticTelecom\Invoices\Payment;
 use QuanticTelecom\InvoicesStorage\Contracts\PaymentFactoryInterface;
@@ -36,7 +36,7 @@ class PaymentFactory implements PaymentFactoryInterface
         return [
             'type' => 'payment',
             'name' => $payment->getPaymentName(),
-            'date' => new MongoDate($payment->getPaymentDate()->timestamp),
+            'date' => new UTCDatetime($payment->getPaymentDate()->timestamp),
         ];
     }
 }

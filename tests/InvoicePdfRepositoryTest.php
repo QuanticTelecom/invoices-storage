@@ -56,6 +56,12 @@ class InvoicePdfRepositoryTest extends InvoiceStorageTest
         );
     }
 
+
+    public function tearDown()
+    {
+        m::close();
+    }
+
     /**
      * @test
      */

@@ -5,7 +5,6 @@ namespace QuanticTelecom\InvoicesStorage\Contracts;
 use QuanticTelecom\Invoices\Contracts\InvoiceInterface;
 use QuanticTelecom\InvoicesStorage\Exceptions\InvoiceFactory\InvalidDataForInvoiceFactoryException;
 use QuanticTelecom\InvoicesStorage\Exceptions\InvoiceFactory\InvoiceTypeNotFoundException;
-use QuanticTelecom\InvoicesStorage\Exceptions\InvoiceFactory\UnknownInvoiceClassException;
 
 /**
  * Interface InvoiceFactoryInterface.

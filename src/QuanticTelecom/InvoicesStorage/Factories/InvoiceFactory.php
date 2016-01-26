@@ -2,7 +2,7 @@
 
 namespace QuanticTelecom\InvoicesStorage\Factories;
 
-use MongoDate;
+use MongoDB\BSON\UTCDatetime;
 use QuanticTelecom\Invoices\AbstractInvoice;
 use QuanticTelecom\Invoices\ExcludingTaxInvoice;
 use QuanticTelecom\Invoices\IncludingTaxInvoice;
@@ -226,8 +226,8 @@ class InvoiceFactory implements InvoiceFactoryInterface
             'type' => $this->inverseResolution($invoice),
             'id' => $invoice->getId(),
             'customer' => $this->customerFactory->toArray($invoice->getCustomer()),
-            'createdAt' => new MongoDate($invoice->getCreatedAt()->timestamp),
-            'dueDate' => new MongoDate($invoice->getDueDate()->timestamp),
+            'createdAt' => new UTCDatetime($invoice->getCreatedAt()->timestamp),
+            'dueDate' => new UTCDatetime($invoice->getDueDate()->timestamp),
             'includingTaxTotalPrice' => $invoice->getIncludingTaxTotalPrice(),
             'excludingTaxTotalPrice' => $invoice->getExcludingTaxTotalPrice(),
             'vatAmount' => $invoice->getVatAmount(),

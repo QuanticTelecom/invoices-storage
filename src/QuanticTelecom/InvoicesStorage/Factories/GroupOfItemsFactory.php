@@ -8,8 +8,6 @@ use QuanticTelecom\Invoices\GroupOfItems;
 use QuanticTelecom\InvoicesStorage\Contracts\GroupOfItemsArrayValidatorInterface;
 use QuanticTelecom\InvoicesStorage\Contracts\GroupOfItemsFactoryInterface;
 use QuanticTelecom\InvoicesStorage\Contracts\ItemFactoryInterface;
-use QuanticTelecom\InvoicesStorage\Exceptions\GroupOfItemsFactory\GroupOfItemsTypeNotFoundException;
-use QuanticTelecom\InvoicesStorage\Exceptions\GroupOfItemsFactory\UnknownGroupOfItemsClassException;
 use QuanticTelecom\InvoicesStorage\Exceptions\InvalidDataForGroupsContainerFactoryException;
 
 /**

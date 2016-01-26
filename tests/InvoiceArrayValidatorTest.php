@@ -2,7 +2,7 @@
 
 namespace QuanticTelecom\InvoicesStorage\Tests;
 
-use MongoDate;
+use MongoDB\BSON\UTCDatetime;
 use QuanticTelecom\InvoicesStorage\Validators\InvoiceArrayValidator;
 
 class InvoiceArrayValidatorTest extends InvoiceStorageTest
@@ -25,8 +25,8 @@ class InvoiceArrayValidatorTest extends InvoiceStorageTest
 
         $this->arrayToValidate = [
             'id' => '42',
-            'createdAt' => new MongoDate(42),
-            'dueDate' => new MongoDate(1337),
+            'createdAt' => new UTCDatetime(42),
+            'dueDate' => new UTCDatetime(1337),
             'customer' => [
                 'type' => 'student',
             ],

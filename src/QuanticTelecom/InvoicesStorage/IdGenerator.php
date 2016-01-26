@@ -15,7 +15,7 @@ class IdGenerator implements IdGeneratorInterface
     private $id;
 
     /**
-     * @param $id ID to generate
+     * @param $id int ID to generate
      */
     public function __construct($id)
     {
