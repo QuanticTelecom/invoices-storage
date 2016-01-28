@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "13900c35996b3bbc57fa2b7582dd9d7f",
-    "content-hash": "a8b67d87cdd9bdac52134b64d4a43dba",
+    "hash": "4a64627a67ca26476241535d31909f81",
+    "content-hash": "8639214ca3387405341904b86caa6a7b",
     "packages": [
         {
             "name": "doctrine/inflector",
@@ -419,23 +419,24 @@
         },
         {
             "name": "jenssegers/mongodb",
-            "version": "v2.2.4",
+            "version": "dev-pecl-mongodb",
             "source": {
                 "type": "git",
                 "url": "https://github.com/jenssegers/laravel-mongodb.git",
-                "reference": "c9e0739d1b874eb05c85daa0637d30fd974c4233"
+                "reference": "71b309df54f877c5263d331123c47a32b4c2c47e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/jenssegers/laravel-mongodb/zipball/c9e0739d1b874eb05c85daa0637d30fd974c4233",
-                "reference": "c9e0739d1b874eb05c85daa0637d30fd974c4233",
+                "url": "https://api.github.com/repos/jenssegers/laravel-mongodb/zipball/71b309df54f877c5263d331123c47a32b4c2c47e",
+                "reference": "71b309df54f877c5263d331123c47a32b4c2c47e",
                 "shasum": ""
             },
             "require": {
                 "illuminate/container": "^5.1",
                 "illuminate/database": "^5.1",
                 "illuminate/events": "^5.1",
-                "illuminate/support": "^5.1"
+                "illuminate/support": "^5.1",
+                "mongodb/mongodb": "^1.0.0"
             },
             "require-dev": {
                 "mockery/mockery": "^0.9",
@@ -474,7 +475,7 @@
                 "mongo",
                 "mongodb"
             ],
-            "time": "2015-12-20 11:15:10"
+            "time": "2016-01-25 14:23:34"
         },
         {
             "name": "mongodb/mongodb",
@@ -633,20 +634,20 @@
         },
         {
             "name": "quantic-telecom/storage",
-            "version": "2.0.0",
+            "version": "dev-develop",
             "source": {
                 "type": "git",
                 "url": "https://github.com/QuanticTelecom/storage.git",
-                "reference": "c50ca9d0c6bafc5beefe3308f09f186bc7a6fea8"
+                "reference": "757e4eec28ee7dd95c4c71e9736113dda9cf6107"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/QuanticTelecom/storage/zipball/c50ca9d0c6bafc5beefe3308f09f186bc7a6fea8",
-                "reference": "c50ca9d0c6bafc5beefe3308f09f186bc7a6fea8",
+                "url": "https://api.github.com/repos/QuanticTelecom/storage/zipball/757e4eec28ee7dd95c4c71e9736113dda9cf6107",
+                "reference": "757e4eec28ee7dd95c4c71e9736113dda9cf6107",
                 "shasum": ""
             },
             "require": {
-                "jenssegers/mongodb": "~2.0",
+                "jenssegers/mongodb": "dev-pecl-mongodb",
                 "php": ">=5.6.0"
             },
             "require-dev": {
@@ -666,7 +667,7 @@
                     "email": "thibaud@dauce.fr"
                 }
             ],
-            "time": "2016-01-26 10:04:12"
+            "time": "2016-01-28 21:24:34"
         },
         {
             "name": "symfony/finder",
@@ -2118,7 +2119,10 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": [],
+    "stability-flags": {
+        "quantic-telecom/storage": 20,
+        "jenssegers/mongodb": 20
+    },
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
